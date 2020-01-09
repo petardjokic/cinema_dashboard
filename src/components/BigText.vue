@@ -1,7 +1,9 @@
 <template>
 <div>
-    <b-row class="mb-2">
-        <b-col sm="3" class="text-sm-right"><b>Opis:</b></b-col>
+    <b-row>
+        <b-col><b>Opis:</b></b-col>
+    </b-row>
+    <b-row>
         <b-col>
             <b-form-textarea id="textarea-plaintext" plaintext :value="this.text" no-resize></b-form-textarea>
         </b-col>

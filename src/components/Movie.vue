@@ -1,17 +1,20 @@
 <template>
-<div>
-    <b-row>
-        <b-col></b-col>
-        <b-col>
-            <b-row class="mb-2">
-                <b-col sm="3" class="text-sm-right"><b>Title:</b></b-col>
-                <b-col>{{ item.title }}</b-col>
-            </b-row>
-            <GenericList title="Genre" :items=item.genres></GenericList>
-            <GenericList title="Prod. company" :items=item.prodComps></GenericList>
-            <BigText></BigText>
-        </b-col>       
-    </b-row>
+<div class="movie">
+    <b-container fluid>
+        <b-row>
+            <b-col>
+                <b-row>
+                    <b-col><b>Title:</b></b-col>
+                </b-row>
+                <b-row>
+                    <b-col>{{ item.title }}</b-col>
+                </b-row>
+                <GenericList title="Genre" :items=item.genres></GenericList>
+                <GenericList title="Prod. company" :items=item.prodComps></GenericList>
+                <BigText></BigText>
+            </b-col>
+        </b-row>
+    </b-container>
 </div>
 </template>
 
@@ -29,6 +32,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.movie {
+    
+}
 </style>

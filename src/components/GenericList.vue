@@ -1,8 +1,12 @@
 <template>
-<b-row class="mb-2">
-    <b-col sm="3" class="text-sm-right"><b>{{ title }}:</b></b-col>
-    <b-col>{{ listString }}</b-col>
-</b-row>
+<div>
+    <b-row>
+        <b-col><b>{{ title }}:</b></b-col>
+    </b-row>
+    <b-row>
+        <b-col>{{ listString }}</b-col>
+    </b-row>
+</div>
 </template>
 
 <script>

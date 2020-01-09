@@ -33,7 +33,7 @@ export default {
             fields: ['title', 'duration', 'year', 'show_details'],
             items: [{
                     id: 40,
-                    title: 'Dickerson',
+                    title: 'Trainspotting',
                     duration: 120,
                     year: 1995,
                     genres: [{
@@ -55,7 +55,7 @@ export default {
                         },
                         {
                             id: 3,
-                            name: 'Popr'
+                            name: 'Pop art'
                         }
                     ]
                 },

@@ -3,20 +3,20 @@
 
     <Menu />
     <div class="content">
-        <MovieSearch />
+        <DisplayView />
     </div>
 </div>
 </template>
 
 <script>
 import Menu from './components/Menu.vue'
-import MovieSearch from './components/MovieSearch.vue'
+import DisplayView from './components/DisplayView.vue'
 
 export default {
     name: 'app',
     components: {
         Menu,
-        MovieSearch
+        DisplayView
     }
 }
 </script>
@@ -24,14 +24,18 @@ export default {
 <style scoped>
 #app {
     height: 100%;
+    width: 100%;
 }
 
 html,
 body {
     height: 100%;
+    width: 100%;
+    
 }
 
 .content {
     margin-top: 50px;
+    /* background-color: lightblue; */
 }
 </style>
