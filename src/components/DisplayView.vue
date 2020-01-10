@@ -1,54 +1,54 @@
 <template>
-    <b-container fluid>
-        <b-row no-gutters>
-            <b-container fluid>
-                <b-row no-gutters>
-                    <b-col>
-                        <b-row>
-                            <b-col></b-col>
-                            <b-col><b>Date:</b></b-col>
-                            <b-col></b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col></b-col>
-                            <b-col>{{ display.starts_at.toLocaleDateString("en-US") }}</b-col>
-                            <b-col></b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col></b-col>
-                            <b-col><b>Time:</b></b-col>
-                            <b-col></b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col></b-col>
-                            <b-col>{{ display.starts_at.toLocaleTimeString() }}</b-col>
-                            <b-col></b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col></b-col>
-                            <b-col><b>Tickets:</b></b-col>
-                            <b-col></b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <b-button block variant="primary" size="lg">TICKETS</b-button>
-                            </b-col>
-                        </b-row>
-                    </b-col>
-                </b-row>
-            </b-container>
-        </b-row>
-        <b-row>
-            <b-col>
-                <Movie :item=display.movie />
-            </b-col>
-        </b-row>
-        <b-row no-gutters>
-            <b-col>
-                <HallView :hall=display.hall />
-            </b-col>
-        </b-row>
-    </b-container>
+<b-container fluid>
+    <b-row no-gutters>
+        <b-container fluid>
+            <b-row no-gutters>
+                <b-col>
+                    <b-row>
+                        <b-col></b-col>
+                        <b-col><b>Date:</b></b-col>
+                        <b-col></b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col></b-col>
+                        <b-col>{{ display.starts_at.toLocaleDateString("en-US") }}</b-col>
+                        <b-col></b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col></b-col>
+                        <b-col><b>Time:</b></b-col>
+                        <b-col></b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col></b-col>
+                        <b-col>{{ display.starts_at.toLocaleTimeString() }}</b-col>
+                        <b-col></b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col></b-col>
+                        <b-col><b>Tickets:</b></b-col>
+                        <b-col></b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col>
+                            <b-button block variant="primary" size="lg">TICKETS</b-button>
+                        </b-col>
+                    </b-row>
+                </b-col>
+            </b-row>
+        </b-container>
+    </b-row>
+    <b-row>
+        <b-col>
+            <Movie :item=display.movie />
+        </b-col>
+    </b-row>
+    <b-row >
+        <b-col>
+            <HallView :hall=display.hall :tickets=display.tickets :show="true"/>
+        </b-col>
+    </b-row>
+</b-container>
 </template>
 
 <script>
@@ -95,29 +95,101 @@ export default {
                 hall: {
                     title: 'Hall of Legends',
                     seats: [{
-                        id: 1,
+                        id: 41,
                         type: {
                             id: 1,
-                            name: 'Regular'
+                            name: 'Classic'
                         },
                         row: 1,
                         col: 1
                     }, {
-                        id: 2,
+                        id: 51,
                         type: {
                             id: 1,
-                            name: 'Regular'
+                            name: 'Classic'
                         },
                         row: 1,
                         col: 2
                     }, {
-                        id: 3,
+                        id: 61,
+                        type: {
+                            id: 2,
+                            name: 'VIP'
+                        },
+                        row: 1,
+                        col: 3
+                    }, {
+                        id: 71,
+                        type: {
+                            id: 2,
+                            name: 'VIP'
+                        },
+                        row: 1,
+                        col: 4
+                    }, {
+                        id: 81,
+                        type: {
+                            id: 1,
+                            name: 'Classic'
+                        },
+                        row: 1,
+                        col: 5
+                    }, {
+                        id: 91,
                         type: {
                             id: 3,
                             name: 'Love'
                         },
                         row: 1,
-                        col: 3
+                        col: 6
+                    }, {
+                        id: 101,
+                        type: {
+                            id: 1,
+                            name: 'Classic'
+                        },
+                        row: 1,
+                        col: 7
+                    }, {
+                        id: 111,
+                        type: {
+                            id: 2,
+                            name: 'VIP'
+                        },
+                        row: 1,
+                        col: 8
+                    }, {
+                        id: 121,
+                        type: {
+                            id: 2,
+                            name: 'VIP'
+                        },
+                        row: 1,
+                        col: 9
+                    }, {
+                        id: 213,
+                        type: {
+                            id: 2,
+                            name: 'VIP'
+                        },
+                        row: 1,
+                        col: 10
+                    }, {
+                        id: 214,
+                        type: {
+                            id: 1,
+                            name: 'Classic'
+                        },
+                        row: 1,
+                        col: 11
+                    }, {
+                        id: 215,
+                        type: {
+                            id: 0,
+                            name: 'Unknown'
+                        },
+                        row: 1,
+                        col: 12
                     }, {
                         id: 4,
                         type: {
@@ -162,7 +234,7 @@ export default {
                         id: 9,
                         type: {
                             id: 3,
-                            name: 'VIP'
+                            name: 'Love'
                         },
                         row: 2,
                         col: 6
@@ -170,7 +242,7 @@ export default {
                         id: 10,
                         type: {
                             id: 1,
-                            name: 'VIP'
+                            name: 'Classic'
                         },
                         row: 2,
                         col: 7
@@ -185,13 +257,13 @@ export default {
                     }, {
                         id: 12,
                         type: {
-                            id: 2,
-                            name: 'VIP'
+                            id: 1,
+                            name: 'Classic'
                         },
                         row: 2,
                         col: 9
                     }, {
-                        id: 13,
+                        id: 2213,
                         type: {
                             id: 2,
                             name: 'VIP'
@@ -210,12 +282,22 @@ export default {
                         id: 15,
                         type: {
                             id: 0,
-                            name: 'VIP'
+                            name: 'Unknown'
                         },
                         row: 2,
                         col: 12
-                    }]
+                    }],
                 },
+                tickets: [{
+                    id: 1,
+                    seatId: 4
+                }, {
+                    id: 2,
+                    seatId: 12
+                }, {
+                    id: 3,
+                    seatId: 13
+                }],
                 starts_at: new Date(),
                 ends_at: new Date()
             }
