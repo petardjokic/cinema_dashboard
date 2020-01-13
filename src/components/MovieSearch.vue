@@ -1,23 +1,19 @@
 <template>
 <div>
-    <template>
-        <div>
-            <b-table hover small table-variant="info" :items="items" :fields="fields" striped responsive="sm">
-                <template v-slot:cell(show_details)="row">
-                    <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-                        {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
-                    </b-button>
-                </template>
+    <b-table hover small table-variant="info" :items="items" :fields="fields" striped responsive="sm">
+        <template v-slot:cell(show_details)="row">
+            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+                {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+            </b-button>
+        </template>
 
-                <template v-slot:row-details="row">
-                    <b-card>
-                        <Movie :item="row.item"></Movie>
-                        <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
-                    </b-card>
-                </template>
-            </b-table>
-        </div>
-    </template>
+        <template v-slot:row-details="row">
+            <b-card>
+                <Movie :item="row.item"></Movie>
+                <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+            </b-card>
+        </template>
+    </b-table>
 </div>
 </template>
 
@@ -80,7 +76,6 @@ export default {
             ]
         }
     },
-    methods: {
-    }
+    methods: {}
 }
 </script>

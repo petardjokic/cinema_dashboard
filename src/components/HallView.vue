@@ -21,13 +21,13 @@
         <b-col cols=12>
             <b-card-group>
                 <div v-for="seat in getSeatsForRow(row)" :key="seat.id">
-                    <b-card :header="seat.type.name" :header-bg-variant=resolveBgColor(seat.type) header-text-variant="white" style="width: 9.75rem;" class="text-center">
+                    <b-card :header="seat.type.name" :header-bg-variant=resolveBgColor(seat.type) header-text-variant="white" style="width: 9.69rem;" class="text-center">
                         <b-card-text>Row: {{seat.row}}<br />Column: {{seat.col}}</b-card-text>
                         <b-card-footer v-if="show" footer-tag="footer" :footer=resolveFooterText(seat.id) :footer-text-variant=resolveFooterBg(seat.id)>
                         </b-card-footer>
                     </b-card>
                     <b-button v-if="show && !isTaken(seat.id) && !isInCart(seat.id)" variant="outline-success" @click="addToCart(seat)">Add to cart</b-button>
-                    <b-button v-if="isInCart(seat.id)" variant="warning" @click="removeFromCart(seat)">Remove cart</b-button>
+                    <b-button v-if="show && isInCart(seat.id)" variant="warning" @click="removeFromCart(seat)">Remove</b-button>
                 </div>
             </b-card-group>
         </b-col>
