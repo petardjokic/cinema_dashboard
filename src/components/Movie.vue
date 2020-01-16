@@ -1,10 +1,8 @@
 <template>
 <div class="movie">
-    <b-row>
+    <b-row cols="1" cols-sm="1" cols-md="1" cols-lg="3">
         <b-col>
-            <div>
-                <b-img src="https://cdn.onebauer.media/one/empire-tmdb/films/627/images/yfNhWKqJFWTRvSo3Qf2x1IFteG3.jpg?quality=50&width=1800&ratio=16-9&resizeStyle=aspectfill&format=jpg" fluid alt="Responsive image"></b-img>
-            </div>
+            <b-img src="https://cdn.onebauer.media/one/empire-tmdb/films/627/images/yfNhWKqJFWTRvSo3Qf2x1IFteG3.jpg?quality=50&width=1800&ratio=16-9&resizeStyle=aspectfill&format=jpg" fluid alt="Responsive image"></b-img>
         </b-col>
         <b-col>
             <SingleElementTable :item=item type="movie" :vertical="true" />

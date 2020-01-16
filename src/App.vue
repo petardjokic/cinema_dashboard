@@ -2,31 +2,36 @@
 <div id="app">
     <Menu />
     <div class="content">
-        <DisplaySearch :displays=display />
+        <Cart />
     </div>
 </div>
 </template>
 
 <script>
 import Menu from './components/Menu.vue'
-import DisplaySearch from './components/DisplaySearch.vue'
+import Cart from './components/Cart.vue'
 
 export default {
     name: 'app',
     components: {
         Menu,
-        DisplaySearch
+        Cart
     },
     data(){
         return {
             display: [{
                 id: 1,
+                price: {
+                    classic: 99.99,
+                    love: 149.99,
+                    vip: 199.99
+                },
                 movie: {
                     id: 40,
                     title: 'Trainspotting',
                     duration: 120,
                     year: 1995,
-                    description: "Ludilo mozga",
+                    description: "Ludilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudiLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgaLudilo mozgalo mozgaLudilo mozga mozga",
                     genres: [{
                             id: 1,
                             name: 'Comedy'
@@ -254,7 +259,7 @@ export default {
                     seatId: 12
                 }, {
                     id: 3,
-                    seatId: 13
+                    seatId: 14
                 }],
                 starts_at: new Date(),
                 ends_at: new Date()

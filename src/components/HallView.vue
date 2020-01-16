@@ -18,10 +18,10 @@
     <b-row>
     </b-row>
     <b-row v-for="(row,index) in getRows" :key="index">
-        <b-col cols=12>
+        <b-col >
             <b-card-group>
                 <div v-for="seat in getSeatsForRow(row)" :key="seat.id">
-                    <b-card :header="seat.type.name" :header-bg-variant=resolveBgColor(seat.type) header-text-variant="white" style="width: 9.69rem;" class="text-center">
+                    <b-card :header="seat.type.name" :header-bg-variant=resolveBgColor(seat.type) header-text-variant="white" style="width: 9.6rem;" class="text-center">
                         <b-card-text>Row: {{seat.row}}<br />Column: {{seat.col}}</b-card-text>
                         <b-card-footer v-if="show" footer-tag="footer" :footer=resolveFooterText(seat.id) :footer-text-variant=resolveFooterBg(seat.id)>
                         </b-card-footer>
