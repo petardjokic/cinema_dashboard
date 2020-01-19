@@ -14,7 +14,7 @@
             <Movie :item=display.movie />
         </b-tab>
         <b-tab title="Tickets" active>
-            <HallView :hall=display.hall :tickets=display.tickets :show="true" />
+            <HallView :hall=display.hall :display=display :show="true" />
         </b-tab>
     </b-tabs>
 </div>

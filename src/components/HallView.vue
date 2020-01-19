@@ -18,7 +18,7 @@
     <b-row>
     </b-row>
     <b-row v-for="(row,index) in getRows" :key="index">
-        <b-col >
+        <b-col>
             <b-card-group>
                 <div v-for="seat in getSeatsForRow(row)" :key="seat.id">
                     <b-card :header="seat.type.name" :header-bg-variant=resolveBgColor(seat.type) header-text-variant="white" style="width: 9.6rem;" class="text-center">
@@ -38,14 +38,9 @@
 <script>
 export default {
     components: {},
-    data(){
-        return{
-            cart: []
-        }
-    },
     props: {
         hall: Object,
-        tickets: Array,
+        display: Object,
         show: Boolean
     },
     computed: {
@@ -56,6 +51,9 @@ export default {
         getColumns: function () {
             var mapped = this.hall.seats.map(seat => seat.col)
             return new Set(mapped)
+        },
+        cart() {
+            return this.$store.getters.getCart
         }
     },
     methods: {
@@ -70,12 +68,15 @@ export default {
                 return "dark"
         },
         resolveFooterText(seatId) {
-            var filteredCart = this.cart.length === 0 ? [] : this.cart.filter(item => item.id === seatId) 
-            if(filteredCart.length > 0) {
-                return "IN CART"
+            const event = this.cart.find(event => event.display.id === this.display.id)
+            if (event != null) {
+                const seat = event.seats.find(seat => seat.id === seatId)
+                if(seat != null) {
+                    return 'IN CART'
+                }
             }
-            if (this.tickets != null) {
-                var filteredTickets = this.tickets.filter(ticket => ticket.seatId === seatId)
+            if (this.display.tickets != null) {
+                var filteredTickets = this.display.tickets.filter(ticket => ticket.seatId === seatId)
                 if (filteredTickets.length > 0)
                     return "BUSY"
                 return "FREE"
@@ -84,13 +85,16 @@ export default {
             }
         },
         resolveFooterBg(seatId) {
-            var filteredCart = this.cart.length === 0 ? [] : this.cart.filter(item => item.id === seatId) 
-            if(filteredCart.length > 0) {
-                return "warning"
+            const event = this.cart.find(event => event.display.id === this.display.id)
+            if (event != null) {
+                const seat = event.seats.find(seat => seat.id === seatId)
+                if(seat != null) {
+                    return 'warning'
+                }
             }
-            if (this.tickets != null) {
-                var filtered = this.tickets.filter(ticket => ticket.seatId === seatId)
-                if (filtered.length > 0)
+            if (this.display.tickets != null) {
+                var filteredTickets = this.display.tickets.filter(ticket => ticket.seatId === seatId)
+                if (filteredTickets.length > 0)
                     return "danger"
                 return "success"
             } else {
@@ -106,25 +110,33 @@ export default {
         },
         isTaken(seatId) {
             var ret = false
-            if (this.tickets != null) {
-                var filtered = this.tickets.filter(ticket => ticket.seatId === seatId)
+            if (this.display.tickets != null) {
+                var filtered = this.display.tickets.filter(ticket => ticket.seatId === seatId)
                 if (filtered.length > 0)
                     ret = true
             }
             return ret
         },
         addToCart(seat) {
-            this.cart.push(seat)
+            this.$store.dispatch('addToCart', {
+                displayId: this.display.id,
+                seat: seat
+            })
         },
         isInCart(seatId) {
-            const arr = this.cart.filter(item => item.id === seatId)
-            if ( arr.length > 0)
-                return true
+            const event = this.cart.find(event => event.display.id === this.display.id)
+            if (event != null) {
+                const seat = event.seats.find(seat => seat.id === seatId)
+                if (seat != null)
+                    return true
+            }
             return false
         },
         removeFromCart(seat) {
-            const arr = this.cart.filter(item => item.id !== seat.id)
-            this.cart = arr
+            this.$store.dispatch('removeFromCart', {
+                displayId: this.display.id,
+                seatId: seat.id
+            })
         }
     }
 }

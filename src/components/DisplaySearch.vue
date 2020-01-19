@@ -29,13 +29,10 @@ export default {
             fields: ['date', 'time', 'movie', 'hall', 'show_details']
         }
     },
-    props: {
-        displays: Array
-    },
     computed: {
         getItems() {
             var mapped = []
-            this.displays.forEach(disp => mapped.push({
+            this.$store.getters.getDisplays.forEach(disp => mapped.push({
                 id: disp.id,
                 date: disp.starts_at.toLocaleDateString(),
                 time: disp.starts_at.toLocaleTimeString(),
@@ -48,9 +45,7 @@ export default {
     },
     methods: {
         findDisplay(dispId) {
-            var filtered = this.displays.filter(disp => disp.id === dispId)
-            const disp = filtered[0]
-            return disp
+            return this.$store.getters.getDisplayById(dispId)
         }
     }
 }
