@@ -2,6 +2,7 @@
 <div id="app">
     <Menu />
     <div class="content">
+        <DisplaySearch :displays=display />
         <Cart />
     </div>
 </div>
@@ -9,12 +10,14 @@
 
 <script>
 import Menu from './components/Menu.vue'
+import DisplaySearch from './components/DisplaySearch.vue'
 import Cart from './components/Cart.vue'
 
 export default {
     name: 'app',
     components: {
         Menu,
+        DisplaySearch,
         Cart
     },
     data(){
