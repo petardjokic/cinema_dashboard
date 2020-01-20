@@ -9,6 +9,11 @@ export const store = new Vuex.Store({
         getCart(state) {
             return state.cart
         },
+        getCartItemsLength(state){
+            var num = 0
+            state.cart.forEach(event => num += event.seats.length)
+            return num
+        },
         getDisplays(state) {
             return state.displays
         },
