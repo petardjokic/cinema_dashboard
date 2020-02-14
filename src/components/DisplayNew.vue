@@ -1,28 +1,38 @@
 <template>
-<b-row>
+<div class='rrr'>
+<b-row >
     <b-col></b-col>
     <b-col>
         <b-form @submit="onSubmit" @reset="onReset">
             <b-form-group id="fieldset-0" description="Display ID" label="ID:" label-for="input-0">
                 <b-form-input id="input-0" type="number" disabled></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldset-1" description="Select movie" label="Movie:" label-for="input-1">
-                <b-form-select v-model=selected.movieId :options=optionsMovie></b-form-select>
-            </b-form-group>
+            <b-row>
+                <b-col>
+                    <b-form-group id="fieldset-1" description="Select movie" label="Movie:" label-for="input-1">
+                        <b-form-select v-model=selected.movieId :options=optionsMovie></b-form-select>
+                    </b-form-group>
+                </b-col>
+                <b-col>
+                    <b-form-group id="fieldset-2" description="Select Hall" label="Hall:" label-for="input-2">
+                        <b-form-select v-model=selected.hallId :options=optionsHall></b-form-select>
+                    </b-form-group>
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col>
+                    <b-form-group id="fieldset-3" description="Enter time" label="Time:" label-for="input-3">
+                        <b-form-input v-model=selected.time id="input-3" type="time"></b-form-input>
+                    </b-form-group>
+                </b-col>
+                <b-col>
+                    <b-form-group id="fieldset-4" description="Enter date" label="Date:" label-for="input-4">
+                        <b-form-input v-model=selected.date id="input-4" type="date"></b-form-input>
+                    </b-form-group>
+                </b-col>
+            </b-row>
 
-            <b-form-group id="fieldset-2" description="Select Hall" label="Hall:" label-for="input-2">
-                <b-form-select v-model=selected.hallId :options=optionsHall></b-form-select>
-            </b-form-group>
-
-            <b-form-group id="fieldset-3" description="Enter time" label="Time:" label-for="input-3">
-                <b-form-input v-model=selected.time id="input-3" type="time"></b-form-input>
-            </b-form-group>
-
-            <b-form-group id="fieldset-4" description="Enter date" label="Date:" label-for="input-4">
-                <b-form-input v-model=selected.date id="input-4" type="date"></b-form-input>
-            </b-form-group>
-
-            <b-form-group v-for="type in seatType" :key="type.id" :id="'fieldset-5' + type.id" :description="'Enter price for seats ' + type.name" label="Price:" label-for="input-5">
+            <b-form-group v-for="type in seatType" :key="type.id" :id="'fieldset-5' + type.id" :description="'Enter price for seats ' + type.name" :label="'Price ' + type.name + ':'" label-for="input-5">
                 <b-form-input v-model=selected.prices[type.id] :id="'input-5' + type.id" type="number"></b-form-input>
             </b-form-group>
             <b-button type="submit" variant="primary">Submit</b-button>
@@ -39,6 +49,7 @@
     </b-col>
     <b-col></b-col>
 </b-row>
+</div>
 </template>
 
 <script>
@@ -75,6 +86,9 @@ export default {
             }, {
                 id: 5,
                 name: "Classic"
+            }, {
+                id: 2,
+                name: "Love"
             }]
         }
     },
@@ -118,6 +132,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    
 </style>
