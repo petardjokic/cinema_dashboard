@@ -2,9 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import DisplayNew from '../components/DisplayNew.vue'
 import MovieSearch from '../components/MovieSearch.vue'
+import MovieNew from '../components/MovieNew.vue'
 import DisplaySearch from '../components/DisplaySearch.vue'
 import Cart from '../components/Cart.vue'
-import Invoice from '../components/Invoice.vue'
+import InvoiceSearch from '../components/InvoiceSearch.vue'
 
 Vue.use(VueRouter)
 
@@ -14,6 +15,11 @@ export const router = new VueRouter({
             path: '/movie-search',
             name: 'movieSearch',
             component: MovieSearch
+        },
+        {
+            path: '/movie-new',
+            name: 'movieNew',
+            component: MovieNew
         },
         {
             path: '/display-new',
@@ -32,8 +38,8 @@ export const router = new VueRouter({
         },
         {
             path: '/invoice',
-            name: 'invoice',
-            component: Invoice
+            name: 'invoiceSearch',
+            component: InvoiceSearch
         }
     ]
 })
