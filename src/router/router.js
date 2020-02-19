@@ -4,7 +4,7 @@ import DisplayNew from '../components/DisplayNew.vue'
 import MovieSearch from '../components/MovieSearch.vue'
 import MovieNew from '../components/MovieNew.vue'
 import DisplaySearch from '../components/DisplaySearch.vue'
-import Cart from '../components/Cart.vue'
+import CartView from '../components/CartView.vue'
 import InvoiceSearch from '../components/InvoiceSearch.vue'
 
 Vue.use(VueRouter)
@@ -34,7 +34,7 @@ export const router = new VueRouter({
         {
             path: '/cart',
             name: 'cart',
-            component: Cart
+            component: CartView
         },
         {
             path: '/invoice',
