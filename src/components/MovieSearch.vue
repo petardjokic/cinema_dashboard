@@ -1,81 +1,40 @@
 <template>
-<div>
-    <b-table hover small table-variant="info" :items="items" :fields="fields" striped responsive="sm">
-        <template v-slot:cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-                {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
-            </b-button>
-        </template>
+<b-row>
+    <b-col></b-col>
+    <b-col cols=12>
+        <b-jumbotron fluid bg-variant="primary" text-variant="white" border-variant="dark">
+            <template v-slot:header>Movie Search</template>
 
-        <template v-slot:row-details="row">
-            <b-card>
-                <Movie :item="row.item"></Movie>
-                <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
-            </b-card>
-        </template>
-    </b-table>
-</div>
+            <template v-slot:lead>
+                This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
+                featured content or information.
+            </template>
+
+            <hr class="my-4">
+
+            
+        </b-jumbotron>
+        <MovieTable />
+    </b-col>
+    <b-col></b-col>
+</b-row>
 </template>
 
 <script>
-import Movie from './Movie.vue'
-
+import MovieTable from "./MovieTable"
 export default {
     components: {
-        Movie
+        MovieTable
     },
     data() {
         return {
-            fields: ['title', 'duration', 'year', 'show_details'],
-            items: [{
-                    id: 40,
-                    title: 'Trainspotting',
-                    duration: 120,
-                    year: 1995,
-                    genres: [{
-                            id: 1,
-                            name: 'Comedy'
-                        },
-                        {
-                            id: 2,
-                            name: 'Horror'
-                        }
-                    ],
-                    prodComps: [{
-                            id: 1,
-                            name: 'Warner Bros.'
-                        },
-                        {
-                            id: 2,
-                            name: '24H20'
-                        },
-                        {
-                            id: 3,
-                            name: 'Pop art'
-                        }
-                    ]
-                },
-                {
-                    id: 21,
-                    title: 'Larsen',
-                    duration: 136,
-                    year: 1996
-                },
-                {
-                    id: 89,
-                    title: 'Geneva',
-                    duration: 96,
-                    year: 1997
-                },
-                {
-                    id: 38,
-                    title: 'Jami',
-                    duration: 210,
-                    year: 1998
-                }
-            ]
+            searchParams: {},
+            listMovies: []
         }
-    },
-    methods: {}
+    }
 }
 </script>
+
+<style>
+
+</style>

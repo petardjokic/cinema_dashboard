@@ -3,7 +3,7 @@
     <b-row>
         <b-col></b-col>
         <b-col cols=6>
-            <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark">
+            <b-jumbotron bg-variant="light" text-variant="white" border-variant="dark">
                 <template v-slot:header>Search Invoice</template>
                 <template v-slot:lead>
                     <b-form-input v-model=invoiceId @change="getInvoice" type='number' placeholder="Enter Invoice ID"></b-form-input>
