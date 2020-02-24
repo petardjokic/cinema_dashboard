@@ -7,6 +7,11 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { store } from './store/store'
 import { router } from './router/router'
+import { BootstrapVue, IconsPlugin  } from 'bootstrap-vue'
+
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin )
+
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import DisplayNew from '../components/DisplayNew.vue'
 import MovieSearch from '../components/MovieSearch.vue'
-import MovieNew from '../components/MovieNew.vue'
+import MovieNewView from '../components/MovieNewView.vue'
 import DisplaySearch from '../components/DisplaySearch.vue'
 import CartView from '../components/CartView.vue'
 import InvoiceSearch from '../components/InvoiceSearch.vue'
@@ -18,8 +18,8 @@ export const router = new VueRouter({
         },
         {
             path: '/movie-new',
-            name: 'movieNew',
-            component: MovieNew
+            name: 'movieNewView',
+            component: MovieNewView
         },
         {
             path: '/display-new',

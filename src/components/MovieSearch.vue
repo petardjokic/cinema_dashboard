@@ -10,17 +10,17 @@
                 featured content or information.
             </template>
 
-            <hr class="my-4">
-
-            
+            <hr class="my-4">          
         </b-jumbotron>
-        <MovieTable />
+        <MovieTable :items= listMovies />
     </b-col>
     <b-col></b-col>
 </b-row>
 </template>
 
 <script>
+import axios from 'axios'
+import {cinemaApi} from '../_destinations/destinations.js'
 import MovieTable from "./MovieTable"
 export default {
     components: {
@@ -28,9 +28,19 @@ export default {
     },
     data() {
         return {
-            searchParams: {},
+            searchParams: { 
+            },
             listMovies: []
         }
+    },
+    created() {
+        const urlMovies = cinemaApi.BASE_URL + cinemaApi.MOVIES
+        axios.get(urlMovies).then(response => {
+            console.log(response.data)
+            this.listMovies = response.data
+        }).catch(err => {
+            console.log(err)
+        })
     }
 }
 </script>

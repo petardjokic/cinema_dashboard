@@ -1,6 +1,6 @@
 <template>
 <div>
-    <b-table :stacked=vertical fixed borderless :items="convertForTable"></b-table>
+    <b-table :stacked=vertical fixed borderless responsive :items="convertForTable"></b-table>
 </div>
 
 </template>
@@ -40,8 +40,8 @@ export default {
             var movie = {
                 "Title": this.item.title,
                 "Genre": this.listString(this.item.genres),
-                "Prod. Company": this.listString(this.item.prodComps),
-                "Year": this.item.year,
+                "Prod. Company": this.listString(this.item.productionCompanies),
+                "Year": this.item.releaseYear,
                 "Duration": this.item.duration,
                 "Description": this.item.description
             }
