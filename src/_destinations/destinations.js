@@ -3,5 +3,6 @@ export const cinemaApi = {
     GENRES: 'genres',
     PRODUCTION_COMPANIES: 'productionCompanies',
     MOVIES: 'movies',
-    SAVE_MOVIE: 'movies/save'
+    SAVE_MOVIE: 'movies/save',
+    DISPLAYS: 'displays'
 }

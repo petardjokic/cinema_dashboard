@@ -20,7 +20,7 @@
     <b-row v-for="(row,index) in getRows" :key="index">
             <b-card-group>
                 <div v-for="seat in getSeatsForRow(row)" :key="seat.id">
-                    <b-card :header="seat.type.name" :header-bg-variant=resolveBgColor(seat.type) header-text-variant="white" style="width: 8.1rem;" class="text-center">
+                    <b-card :header="seat.seatType.name" :header-bg-variant=resolveBgColor(seatType) header-text-variant="white" style="width: 8.9rem;" class="text-center">
                         <b-card-text>Row: {{seat.row}}<br />Column: {{seat.col}}</b-card-text>
                         <b-card-footer v-if="show" footer-tag="footer" :footer=resolveFooterText(seat.id) :footer-text-variant=resolveFooterBg(seat.id)>
                         </b-card-footer>
@@ -47,7 +47,7 @@ export default {
             return new Set(mapped)
         },
         getColumns: function () {
-            var mapped = this.hall.seats.map(seat => seat.col)
+            var mapped = this.hall.seats.map(seat => seat.column)
             return new Set(mapped)
         },
         cart() {
@@ -103,7 +103,7 @@ export default {
             return this.hall.seats.filter(seat => seat.row === row)
         },
         getSeatTypeNum(type) {
-            var arr = this.hall.seats.filter(seat => seat.type.id === type)
+            var arr = this.hall.seats.filter(seat => seat.seatType.id === type)
             return arr.length
         },
         isTaken(seatId) {

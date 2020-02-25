@@ -19,34 +19,51 @@
 
 <script>
 import DisplayView from './DisplayView.vue'
-
+import {
+    cinemaApi
+} from '../_destinations/destinations.js'
+import axios from 'axios'
 export default {
     components: {
         DisplayView
     },
     data() {
         return {
-            fields: ['date', 'time', 'movie', 'hall', 'show_details']
+            fields: ['date', 'time', 'movie', 'hall', 'show_details'],
+            displays: []
         }
     },
     computed: {
         getItems() {
             var mapped = []
-            this.$store.getters.getDisplays.forEach(disp => mapped.push({
-                id: disp.id,
-                date: disp.starts_at.toLocaleDateString(),
-                time: disp.starts_at.toLocaleTimeString(),
-                movie: disp.movie.title,
-                hall: disp.hall.title
+            this.displays.forEach(disp => {
+                if (disp != null) {
+                    mapped.push({
+                        id: disp.id,
+                        date: disp.startsAt,
+                        time: disp.startsAt,
+                        movie: disp.movie.title,
+                        hall: disp.hall.name
 
-            }))
+                    })
+                }
+            })
             return mapped
         }
     },
     methods: {
-        findDisplay(dispId) {
-            return this.$store.getters.getDisplayById(dispId)
+        findDisplay(rowItemId) {
+            const arr =this.displays.filter(display => display.id === rowItemId)
+            console.log(arr[0])
+            return arr[0]
         }
+    },
+    created() {
+        axios.get(cinemaApi.BASE_URL + cinemaApi.DISPLAYS).then(response => {
+            this.displays = response.data
+        }).catch(err => {
+            console.log(err)
+        })
     }
 }
 </script>
