@@ -1,18 +1,18 @@
 <template>
 <div>
-    <b-form @submit="onSubmit" @reset="onReset">
+    <b-form>
         <b-form-group id="fieldset-0" description="Display ID" label="ID:" label-for="input-0">
             <b-form-input id="input-0" type="number" disabled></b-form-input>
         </b-form-group>
         <b-row>
             <b-col>
                 <b-form-group id="fieldset-1" description="Select movie" label="Movie:" label-for="input-1">
-                    <b-form-select v-model=selected.movieId :options=optionsMovie></b-form-select>
+                    <b-form-select v-model=selected.movie :options=optionsMovie></b-form-select>
                 </b-form-group>
             </b-col>
             <b-col>
                 <b-form-group id="fieldset-2" description="Select Hall" label="Hall:" label-for="input-2">
-                    <b-form-select v-model=selected.hallId :options=optionsHall></b-form-select>
+                    <b-form-select v-model=selected.hall :options=optionsHall></b-form-select>
                 </b-form-group>
             </b-col>
         </b-row>
@@ -28,70 +28,46 @@
                 </b-form-group>
             </b-col>
         </b-row>
+        <div v-if="selected.hall != null">
+            <b-form-group v-for="(type,index) in seatTypes" :key="index" :id="'fieldset-5' + type.name" :description="'Enter price for seats ' + type.name" :label="'Price ' + type.name + ':'" label-for="input-5">
+                <b-form-input v-model=selected.displayPrices[type.id] :id="'input-5' + index" type="number"></b-form-input>
+            </b-form-group>
+        </div>
 
-        <b-form-group v-for="type in seatType" :key="type.id" :id="'fieldset-5' + type.id" :description="'Enter price for seats ' + type.name" :label="'Price ' + type.name + ':'" label-for="input-5">
-            <b-form-input v-model=selected.prices[type.id] :id="'input-5' + type.id" type="number"></b-form-input>
-        </b-form-group>
-        <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
-        <p>Movie ID: {{selected.movieId}}</p>
-        <p>Hall ID: {{selected.hallId}}</p>
+        <p>Movie ID: {{selected.movie}}</p>
+        <p>Hall ID: {{selected.hall}}</p>
         <p>TIME: {{selected.time}}</p>
         <p>DATE: {{selected.date}}</p>
-        <p v-for="type in seatType" :key="type.id + '' + type.id">
-            ID: {{type.id}} PRICE: {{selected.prices[type.id]}}
+        <p v-for="(type,index) in seatTypes" :key="index + '' + index">
+            ID: {{type.id}} PRICE: {{selected.displayPrices[type.id]}}
         </p>
-        <p>{{selected.prices.length}}</p>
     </b-form>
 </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            selected: {
-                id: null,
-                movieId: null,
-                hallId: null,
-                time: null,
-                date: null,
-                prices: []
-            },
-            data: {
-                movie: [{
-                    id: 1,
-                    title: "Wow"
-                }, {
-                    id: 2,
-                    title: "Hush"
-                }],
-                hall: [{
-                    id: 1,
-                    name: "LLL"
-                }, {
-                    id: 2,
-                    name: "HHH"
-                }]
-            },
-            seatType: [{
-                id: 1,
-                name: "VIP"
-            }, {
-                id: 5,
-                name: "Classic"
-            }, {
-                id: 2,
-                name: "Love"
-            }]
+    props: {
+        selected: Object,
+        movies: {
+            type: Array,
+            default () {
+                return null
+            }
+        },
+        halls: {
+            type: Array,
+            default () {
+                return null
+            }
         }
     },
     computed: {
         optionsMovie() {
             var array = []
-            this.data.movie.forEach(movie => {
+            this.movies.forEach(movie => {
                 array.push({
-                    value: movie.id,
+                    value: movie,
                     text: movie.title
                 })
             });
@@ -99,30 +75,28 @@ export default {
         },
         optionsHall() {
             var array = []
-            this.data.hall.forEach(hall => {
+            this.halls.forEach(hall => {
                 array.push({
-                    value: hall.id,
+                    value: hall,
                     text: hall.name
                 })
             });
             return array
-        }
-    },
-    methods: {
-        onSubmit() {
-            this.onReset()
         },
-        onReset() {
-            this.selected = {
-                movieId: null,
-                hallId: null,
-                time: null,
-                date: null,
-                prices: []
+        seatTypes() {
+            var obj = {}
+            var mapped = null
+            if (this.selected.hall != null) {
+                mapped = this.selected.hall.seats.map(seat => seat.seatType.id)
+                mapped.forEach(seatTypeId => {
+                    if (obj[seatTypeId] == null) {
+                        obj[seatTypeId] = this.selected.hall.seats.map(seat => seat.seatType).find(seatType => seatType.id == seatTypeId)
+                    }
+                })
             }
+            return obj
         }
     }
-
 }
 </script>
 

@@ -37,7 +37,6 @@ export default {
         },
         convertMovie() {
             var movie = {
-                trailerUri: this.item.trailerUri,
                 title: this.item.title,
                 genres: this.listString(this.item.genres),
                 productionCompanies: this.listString(this.item.productionCompanies),
@@ -49,34 +48,30 @@ export default {
         },
         convertTicket() {
             const tickets = this.item.tickets
-            const classic = this.item.hall.seats.filter(seat => {
-                console.log(seat.seatType)
-                seat.seatType.id === 1
-            })
+            const classic = this.item.hall.seats.filter(seat => seat.seatType.id === 1)
             const vip = this.item.hall.seats.filter(seat => seat.seatType.id === 2)
             const love = this.item.hall.seats.filter(seat => seat.seatType.id === 3)
 
             var classicFree = classic.length - this.countTaken(classic, tickets)
             var vipFree = vip.length - this.countTaken(vip, tickets)
             var loveFree = love.length - this.countTaken(love, tickets)
-
             return [{
                     type: "Classic",
-                    price: this.item.price.classic,
+                    price: this.item.displayPrices[0].price,
                     free: classicFree,
                     total: classic.length,
                     _rowVariant: 'primary'
                 },
                 {
                     type: "VIP",
-                    price: this.item.price.vip,
+                    price: this.item.displayPrices[1].price,
                     free: vipFree,
                     total: vip.length,
                     _rowVariant: 'success'
                 },
                 {
                     type: "Love",
-                    price: this.item.price.love,
+                    price: this.item.displayPrices[2].price,
                     free: loveFree,
                     total: love.length,
                     _rowVariant: 'danger'
@@ -95,7 +90,6 @@ export default {
             var ret = ''
             arr.forEach(item => {
                 ret += item.name + ', '
-
             });
             if (ret.length > 2) {
                 ret = ret.substr(0, ret.length - 2)

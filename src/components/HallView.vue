@@ -2,7 +2,7 @@
 <div>
     <b-row>
         <b-col cols="3">
-            <h1>{{hall.title}}</h1>
+            <h1>{{hall.name}}</h1>
         </b-col>
         <b-col class="d-none d-lg-block" cols="6">
             <b-card border-variant="dark" header="CANVAS" align="center">
@@ -20,8 +20,8 @@
     <b-row v-for="(row,index) in getRows" :key="index">
             <b-card-group>
                 <div v-for="seat in getSeatsForRow(row)" :key="seat.id">
-                    <b-card :header="seat.seatType.name" :header-bg-variant=resolveBgColor(seatType) header-text-variant="white" style="width: 8.9rem;" class="text-center">
-                        <b-card-text>Row: {{seat.row}}<br />Column: {{seat.col}}</b-card-text>
+                    <b-card :header="seat.seatType.name" :header-bg-variant=resolveBgColor(seat.seatType) header-text-variant="white" style="width: 8.9rem;" class="text-center">
+                        <b-card-text>Row: {{seat.row}}<br />Column: {{seat.column}}</b-card-text>
                         <b-card-footer v-if="show" footer-tag="footer" :footer=resolveFooterText(seat.id) :footer-text-variant=resolveFooterBg(seat.id)>
                         </b-card-footer>
                     </b-card>
@@ -42,11 +42,11 @@ export default {
         show: Boolean
     },
     computed: {
-        getRows: function () {
+        getRows() {
             var mapped = this.hall.seats.map(seat => seat.row)
             return new Set(mapped)
         },
-        getColumns: function () {
+        getColumns() {
             var mapped = this.hall.seats.map(seat => seat.column)
             return new Set(mapped)
         },
@@ -100,7 +100,8 @@ export default {
             }
         },
         getSeatsForRow(row) {
-            return this.hall.seats.filter(seat => seat.row === row)
+            const arr =this.hall.seats.filter(seat => seat.row === row)
+            return arr
         },
         getSeatTypeNum(type) {
             var arr = this.hall.seats.filter(seat => seat.seatType.id === type)
@@ -117,7 +118,7 @@ export default {
         },
         addToCart(seat) {
             this.$store.dispatch('addToCart', {
-                displayId: this.display.id,
+                display: this.display,
                 seat: seat
             })
         },
@@ -132,7 +133,7 @@ export default {
         },
         removeFromCart(seat) {
             this.$store.dispatch('removeFromCart', {
-                displayId: this.display.id,
+                display: this.display,
                 seatId: seat.id
             })
         }

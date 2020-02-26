@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import DisplayNew from '../components/DisplayNew.vue'
+import DisplayNewView from '../components/DisplayNewView.vue'
 import MovieSearch from '../components/MovieSearch.vue'
 import MovieNewView from '../components/MovieNewView.vue'
 import DisplaySearch from '../components/DisplaySearch.vue'
@@ -23,8 +23,8 @@ export const router = new VueRouter({
         },
         {
             path: '/display-new',
-            name: 'DisplayNew',
-            component: DisplayNew
+            name: 'DisplayNewView',
+            component: DisplayNewView
         },
         {
             path: '/display-search',
@@ -43,4 +43,3 @@ export const router = new VueRouter({
         }
     ]
 })
-

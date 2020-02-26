@@ -9,7 +9,7 @@
 
         <template v-slot:row-details="row">
             <b-card>
-                <DisplayView :display="findDisplay(row.item.id)"></DisplayView>
+                <Display :display="findDisplay(row.item.id)" />
                 <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
             </b-card>
         </template>
@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import DisplayView from './DisplayView.vue'
+import Display from './Display.vue'
 import {
     cinemaApi
 } from '../_destinations/destinations.js'
 import axios from 'axios'
 export default {
     components: {
-        DisplayView
+        Display
     },
     data() {
         return {
@@ -54,7 +54,6 @@ export default {
     methods: {
         findDisplay(rowItemId) {
             const arr =this.displays.filter(display => display.id === rowItemId)
-            console.log(arr[0])
             return arr[0]
         }
     },

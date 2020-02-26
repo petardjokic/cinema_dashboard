@@ -28,16 +28,16 @@ export default {
                 var seatsS = event.seats.map(seat => {
                     let obj = {}
                     obj.id = seat.id
-                    obj.type = seat.type.name
+                    obj.seatType = seat.seatType
                     obj.row = seat.row
-                    obj.col = seat.col
+                    obj.col = seat.column
                     return obj
                 })
                 mappedDisplays.push({
                     id: event.display.id,
                     movie: event.display.movie.title,
-                    hall: event.display.hall.title,
-                    date: event.display.starts_at.toString().split('GMT')[0],
+                    hall: event.display.hall.name,
+                    date: event.display.startsAt,
                     seats: seatsS
                 })
             });

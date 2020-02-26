@@ -55,7 +55,6 @@
 
 <script>
 export default {
-    created() {},
     mounted() {
         if (this.selected.genres.length > 0)
             this.selected.genres = this.selected.genres.map(genre => {

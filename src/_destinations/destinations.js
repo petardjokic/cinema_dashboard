@@ -4,5 +4,7 @@ export const cinemaApi = {
     PRODUCTION_COMPANIES: 'productionCompanies',
     MOVIES: 'movies',
     SAVE_MOVIE: 'movies/save',
-    DISPLAYS: 'displays'
+    DISPLAYS: 'displays',
+    SAVE_DISPLAY: 'displays/save',
+    HALLS: 'halls'
 }

@@ -14,10 +14,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import {
-    cinemaApi
-} from '../_destinations/destinations.js'
 import MovieNew from './MovieNew.vue'
 export default {
     components: {
@@ -34,33 +30,6 @@ export default {
                 genres: [],
                 productionCompanies: []
             }
-        }
-    },
-    methods: {
-        onReset() {
-            this.selected = {
-                title: "",
-                releaseYear: null,
-                duration: null,
-                description: '',
-                genres: [],
-                productionCompanies: []
-            }
-        },
-        onSubmit() {
-            this.selected.genres = this.selected.genres.map(genre => {
-                return {
-                    id: genre
-                }
-            })
-            this.selected.productionCompanies = this.selected.productionCompanies.map(productionCompany => {
-                return {
-                    id: productionCompany
-                }
-            })
-            axios.post(cinemaApi.BASE_URL + cinemaApi.SAVE_MOVIE, this.selected).then(response => {
-                console.log(response.data)
-            })
         }
     }
 }

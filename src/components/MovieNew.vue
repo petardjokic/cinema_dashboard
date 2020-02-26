@@ -1,17 +1,15 @@
 <template>
 <div>
-<MovieEntry :selected=selected :genres=genres :productionCompanies=productionCompanies />
-<hr>
-<b-button type="submit" variant="primary" @click="onSubmit">Submit</b-button>
-<b-button type="reset" variant="danger" @click="onReset">Reset</b-button>
+    <MovieEntry :selected=selected :genres=genres :productionCompanies=productionCompanies />
+    <hr>
+    <b-button type="submit" variant="primary" @click="onSubmit">Submit</b-button>
+    <b-button type="reset" variant="danger" @click="onReset">Reset</b-button>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
-import {
-    cinemaApi
-} from '../_destinations/destinations.js'
+import {cinemaApi} from '../_destinations/destinations.js'
 import MovieEntry from './MovieEntry.vue'
 export default {
     components: {
@@ -34,11 +32,8 @@ export default {
             this.productionCompanies = responses[1].data
         })).catch(err => {
             //modal message and router go
-            console.log("EVO GA" + err)
+            console.log(err)
         })
-    },
-    mounted() {
-        console.log("Movie new mounted!")
     },
     methods: {
         onReset() {
@@ -66,7 +61,7 @@ export default {
                 this.selected = response.data
                 this.$emit('movieSaved')
             })
-            
+
         }
     }
 }
