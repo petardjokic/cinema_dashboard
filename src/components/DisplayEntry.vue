@@ -34,13 +34,13 @@
             </b-form-group>
         </div>
 
-        <p>Movie ID: {{selected.movie}}</p>
+        <!-- <p>Movie ID: {{selected.movie}}</p>
         <p>Hall ID: {{selected.hall}}</p>
         <p>TIME: {{selected.time}}</p>
         <p>DATE: {{selected.date}}</p>
         <p v-for="(type,index) in seatTypes" :key="index + '' + index">
             ID: {{type.id}} PRICE: {{selected.displayPrices[type.id]}}
-        </p>
+        </p> -->
     </b-form>
 </div>
 </template>

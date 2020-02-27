@@ -1,6 +1,6 @@
 <template>
 <div>
-    <b-table :stacked=vertical fixed borderless responsive :items="convertForTable"></b-table>
+    <b-table :stacked=vertical borderless responsive :items="convertForTable"></b-table>
 </div>
 </template>
 

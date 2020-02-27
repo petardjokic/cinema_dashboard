@@ -14,7 +14,7 @@
         </template>
 
         <template v-slot:cell(delete)="row">
-            <b-button size="sm" variant='danger'>
+            <b-button v-b-modal.movie-delete-modal size="sm" variant='danger' @click="setSelectedMovie(row)">
                 <b-icon icon="trash"></b-icon>
             </b-button>
         </template>
@@ -26,15 +26,26 @@
             </b-card>
         </template>
     </b-table>
-    <b-modal id="movie-edit-modal" size="lg" title="Edit movie"  hide-footer>
+    <b-modal id="movie-edit-modal" size="lg" title="Edit movie" hide-footer>
         <div>
             <MovieNew :selected=selected @movieSaved=updateMovie />
         </div>
-        <template v-slot:modal-footer="{ ok, cancel, hide }">
+        <template v-slot:modal-footer="{ ok, cancel }">
             <b-button size="sm" variant="success" @click="saveMovie()">
                 OK
             </b-button>
             <b-button size="sm" variant="danger" @click="cancel()">
+                Cancel
+            </b-button>
+        </template>
+    </b-modal>
+    <b-modal static id="movie-delete-modal" title="Delete Movie" hide-footer>
+        <p v-if="selected != null" class="my-4">Are you sure you want to delete <strong>{{selected.title}}</strong>?</p>
+        <template v-slot:modal-footer="{ ok, cancel }">
+            <b-button size="sm" variant="danger" @click="deleteMovie()">
+                Delete
+            </b-button>
+            <b-button size="sm" variant="primary" @click="cancel()">
                 Cancel
             </b-button>
         </template>
@@ -86,6 +97,9 @@ export default {
             }
             this.$refs['movie-edit-modal'].hide()
             return item
+        },
+        deleteMovie() {
+            
         }
     }
 }

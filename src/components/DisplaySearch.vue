@@ -1,65 +1,43 @@
 <template>
-<div>
-    <b-table hover small table-variant="info" :items="getItems" :fields="fields" striped responsive="sm">
-        <template v-slot:cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-                {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
-            </b-button>
-        </template>
+<b-row>
+    <b-col></b-col>
+    <b-col cols=12>
+        <b-jumbotron container-fluid bg-variant="primary" text-variant="white" border-variant="dark">
+            <template v-slot:header>Display Search</template>
 
-        <template v-slot:row-details="row">
-            <b-card>
-                <Display :display="findDisplay(row.item.id)" />
-                <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
-            </b-card>
-        </template>
-    </b-table>
-</div>
+            <template v-slot:lead>
+                This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
+                featured content or information.
+            </template>
+
+            <hr class="my-4">
+
+        </b-jumbotron>
+        <DisplayTable :items=listDisplays />
+    </b-col>
+    <b-col></b-col>
+</b-row>
 </template>
 
 <script>
-import Display from './Display.vue'
+import DisplayTable from './DisplayTable.vue'
 import {
     cinemaApi
 } from '../_destinations/destinations.js'
 import axios from 'axios'
 export default {
     components: {
-        Display
+        DisplayTable
     },
     data() {
         return {
-            fields: ['date', 'time', 'movie', 'hall', 'show_details'],
-            displays: []
-        }
-    },
-    computed: {
-        getItems() {
-            var mapped = []
-            this.displays.forEach(disp => {
-                if (disp != null) {
-                    mapped.push({
-                        id: disp.id,
-                        date: disp.startsAt,
-                        time: disp.startsAt,
-                        movie: disp.movie.title,
-                        hall: disp.hall.name
-
-                    })
-                }
-            })
-            return mapped
-        }
-    },
-    methods: {
-        findDisplay(rowItemId) {
-            const arr =this.displays.filter(display => display.id === rowItemId)
-            return arr[0]
+            searchParams: {},
+            listDisplays: []
         }
     },
     created() {
         axios.get(cinemaApi.BASE_URL + cinemaApi.DISPLAYS).then(response => {
-            this.displays = response.data
+            this.listDisplays = response.data
         }).catch(err => {
             console.log(err)
         })

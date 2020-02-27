@@ -36,7 +36,6 @@ export default {
     created() {
         const urlMovies = cinemaApi.BASE_URL + cinemaApi.MOVIES
         axios.get(urlMovies).then(response => {
-            console.log(response.data)
             this.listMovies = response.data
         }).catch(err => {
             console.log(err)

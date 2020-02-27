@@ -44,11 +44,10 @@
                 <b-form-textarea v-model=selected.description id="textarea-small" placeholder="Enter description"></b-form-textarea>
             </b-col>
         </b-row>
-
-        <p>Genres: {{selected.genres}}</p>
+        <!-- <p>Genres: {{selected.genres}}</p>
         <p>Prod. Comp.: {{selected.productionCompanies}}</p>
         <p>Year: {{selected.releaseYear}}</p>
-        <p>Duration: {{selected.duration}}</p>
+        <p>Duration: {{selected.duration}}</p> -->
     </b-form>
 </div>
 </template>

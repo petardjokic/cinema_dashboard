@@ -48,14 +48,22 @@ export default {
             }
         },
         onSubmit() {
-            this.selected.startsAt = this.selected.date + 'T' + this.selected.time + ':00.000'
-            console.log(Object.entries(this.selected.displayPrices))
-            // axios.post(cinemaApi.BASE_URL + cinemaApi.SAVE_DISPLAY, this.selected).then(response => {
-            //     this.selected = response.data
-            //     this.$emit('displaySaved')
-            // }).catch(err => {
-            //     console.log(err)
-            // })
+            var sPrices = []
+            const startsAt = this.selected.date + 'T' + this.selected.time + ':00.000'
+            Object.entries(this.selected.displayPrices).forEach(entry => {
+                sPrices.push({
+                    seatTypeId: entry[0],
+                    price: parseFloat(entry[1])
+                })
+            })
+            var display = {movie: this.selected.movie, hall: this.selected.hall, startsAt: startsAt, displayPrices: sPrices}
+            console.log(display)
+            axios.post(cinemaApi.BASE_URL + cinemaApi.SAVE_DISPLAY, display).then(response => {
+                response.data
+                this.$emit('displaySaved', response.data)
+            }).catch(err => {
+                console.log(err)
+            })
 
         }
     }
