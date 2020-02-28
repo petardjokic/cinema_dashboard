@@ -17,7 +17,7 @@
 export default {
     data() {
         return {
-            fields: ["type", "row", "col", "remove"]
+            fields: ["seatType", "row", "col", "remove"]
         }
     },
     computed: {
@@ -28,7 +28,7 @@ export default {
                 var seatsS = event.seats.map(seat => {
                     let obj = {}
                     obj.id = seat.id
-                    obj.seatType = seat.seatType
+                    obj.seatType = seat.seatType.name
                     obj.row = seat.row
                     obj.col = seat.column
                     return obj

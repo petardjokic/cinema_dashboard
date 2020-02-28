@@ -1,10 +1,11 @@
 export const cinemaApi = {
     BASE_URL: 'http://localhost:8087/api/',
-    GENRES: 'genres',
+    GENRES: 'genres/',
     PRODUCTION_COMPANIES: 'productionCompanies',
-    MOVIES: 'movies',
+    MOVIES: 'movies/',
     SAVE_MOVIE: 'movies/save',
-    DISPLAYS: 'displays',
+    DISPLAYS: 'displays/',
     SAVE_DISPLAY: 'displays/save',
-    HALLS: 'halls'
+    HALLS: 'halls/',
+    INVOICES: 'invoices/'
 }

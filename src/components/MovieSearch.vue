@@ -12,7 +12,7 @@
 
             <hr class="my-4">          
         </b-jumbotron>
-        <MovieTable :items= listMovies />
+        <MovieTable :items=listMovies />
     </b-col>
     <b-col></b-col>
 </b-row>

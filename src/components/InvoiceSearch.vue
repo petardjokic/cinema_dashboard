@@ -6,8 +6,9 @@
             <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark">
                 <template v-slot:header>Search Invoice</template>
                 <template v-slot:lead>
-                    <b-form-input v-model=invoiceId @change="getInvoice" type='number' placeholder="Enter Invoice ID"></b-form-input>
+                    <b-form-input v-model=invoiceId @change="getInvoice" type='number' placeholder="Enter Invoice ID" debounce="1000"></b-form-input>
                 </template>
+                {{invoiceId}}
                 <hr class="my-4">
                 <div v-if="invoiceId != ''">
                     <Invoice :itemData=data />
@@ -21,6 +22,10 @@
 
 <script>
 import Invoice from './Invoice.vue'
+import {
+    cinemaApi
+} from '../_destinations/destinations.js'
+import axios from 'axios'
 export default {
     components: {
         Invoice
@@ -78,9 +83,14 @@ export default {
     },
     methods: {
         getInvoice() {
-            this.data.id = this.data.id + 1
-            console.log(this.invoiceId)
-            return 0;
+            if (this.invoiceId.length == 0)
+                this.data = null
+            axios.get(cinemaApi.BASE_URL + cinemaApi.INVOICES + this.invoiceId).then(response => {
+                console.log(response.data)
+                this.data = response.data
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }
 }
