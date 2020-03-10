@@ -98,8 +98,8 @@ export default {
                 id: display.id,
                 movie: display.movie,
                 hall: display.hall,
-                time: display.startsAt.split('T')[0],
-                date: display.startsAt.split('T')[1],
+                time: display.startsAt.split('T')[1],
+                date: display.startsAt.split('T')[0],
                 displayPrices: display.displayPrices,
                 tickets: display.tickets
             }

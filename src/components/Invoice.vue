@@ -14,36 +14,37 @@
 </template>
 
 <script>
-
 export default {
     props: {
         itemData: Object
     },
     data() {
         return {
-            
+
         }
     },
     computed: {
         invoice() {
             var computedInvoice = {}
-            computedInvoice.id = this.itemData.id
-            computedInvoice.time = this.itemData.startsAt
-            computedInvoice.date = this.itemData.startsAt
-            computedInvoice.items = []
-            var displayIds = []
-            displayIds = new Set(this.itemData.tickets.map(item => item.displayId))
-            displayIds.forEach(displayId => {
-                const item = this.itemData.tickets.find(item => item.displayId === displayId)
-                const displayItems = this.itemData.tickets.filter(item => item.displayId === displayId)
-                const seats = displayItems.map(item => item.seat)
-                computedInvoice.items.push({
-                    movie: item.movieName,
-                    hall: item.hall,
-                    time: item.time,
-                    seats: seats
-                })
-            });
+            if (this.itemData != null) {
+                computedInvoice.id = this.itemData.id
+                computedInvoice.time = this.itemData.issuedAt.split('T')[1]
+                computedInvoice.date = this.itemData.issuedAt.split('T')[0]
+                computedInvoice.items = []
+                var displayIds = []
+                displayIds = new Set(this.itemData.tickets.map(item => item.displayId))
+                displayIds.forEach(displayId => {
+                    const item = this.itemData.tickets.find(item => item.displayId === displayId)
+                    const displayItems = this.itemData.tickets.filter(item => item.displayId === displayId)
+                    const seats = displayItems.map(item => item.seat)
+                    computedInvoice.items.push({
+                        movie: item.movie.title,
+                        hall: item.hall.name,
+                        time: item.startsAt.split('T')[1] + ' ' + item.startsAt.split('T')[0],
+                        seats: seats
+                    })
+                });
+            }
             return computedInvoice
         }
     },
@@ -52,8 +53,8 @@ export default {
             return seats.map(seat => {
                 return {
                     row: seat.row,
-                    column: seat.col,
-                    type: seat.type.name
+                    column: seat.column,
+                    type: seat.seatType.name
                 }
             })
         }

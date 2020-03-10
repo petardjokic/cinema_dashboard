@@ -6,11 +6,11 @@
             <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark">
                 <template v-slot:header>Search Invoice</template>
                 <template v-slot:lead>
-                    <b-form-input v-model=invoiceId @change="getInvoice" type='number' placeholder="Enter Invoice ID" debounce="1000"></b-form-input>
+                    <b-form-input v-model=invoiceId @change="getInvoice" type='number' placeholder="Enter Invoice ID"></b-form-input>
                 </template>
                 {{invoiceId}}
                 <hr class="my-4">
-                <div v-if="invoiceId != ''">
+                <div v-if="show">
                     <Invoice :itemData=data />
                 </div>
             </b-jumbotron>
@@ -33,52 +33,8 @@ export default {
     data() {
         return {
             invoiceId: '',
-            data: {
-                id: 2,
-                time: new Date(),
-                items: [{
-                        displayId: 1,
-                        movie: "The Sunset Limited",
-                        hall: "Hall of Legends",
-                        time: new Date().toLocaleString().split("GMT")[0],
-                        seat: {
-                            id: 13,
-                            type: {
-                                name: "Love"
-                            },
-                            row: 1,
-                            col: 1
-                        }
-                    }, {
-                        displayId: 1,
-                        movie: "The Sunset Limited",
-                        hall: "Hall of Legends",
-                        time: new Date().toLocaleString().split("GMT")[0],
-                        seat: {
-                            id: 14,
-                            type: {
-                                name: "Love"
-                            },
-                            row: 2,
-                            col: 2
-                        },
-                    },
-                    {
-                        displayId: 2,
-                        movie: "Yolooo",
-                        hall: "Wall St.",
-                        time: new Date().toLocaleString().split("GMT")[0],
-                        seat: {
-                            id: 14,
-                            type: {
-                                name: "Love"
-                            },
-                            row: 2,
-                            col: 2
-                        },
-                    }
-                ]
-            }
+            data: null,
+            show: false
         }
     },
     methods: {
@@ -88,6 +44,7 @@ export default {
             axios.get(cinemaApi.BASE_URL + cinemaApi.INVOICES + this.invoiceId).then(response => {
                 console.log(response.data)
                 this.data = response.data
+                this.show = true
             }).catch(err => {
                 console.log(err)
             })
