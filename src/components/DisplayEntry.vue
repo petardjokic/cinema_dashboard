@@ -2,7 +2,7 @@
 <div>
     <b-form>
         <b-form-group id="fieldset-0" description="Display ID" label="ID:" label-for="input-0">
-            <b-form-input id="input-0" type="number" disabled></b-form-input>
+            <b-form-input v-model=selected.id id="input-0" type="number" disabled></b-form-input>
         </b-form-group>
         <b-row>
             <b-col>
@@ -30,7 +30,7 @@
         </b-row>
         <div v-if="selected.hall != null">
             <b-form-group v-for="(type,index) in seatTypes" :key="index" :id="'fieldset-5' + type.name" :description="'Enter price for seats ' + type.name" :label="'Price ' + type.name + ':'" label-for="input-5">
-                <b-form-input v-model=selected.displayPrices[type.id] :id="'input-5' + index" type="number"></b-form-input>
+                <b-form-input v-model=selected.displayPrices[type.id].price :id="'input-5' + index" type="number"></b-form-input>
             </b-form-group>
         </div>
 
@@ -41,6 +41,7 @@
         <p v-for="(type,index) in seatTypes" :key="index + '' + index">
             ID: {{type.id}} PRICE: {{selected.displayPrices[type.id]}}
         </p>
+        <p>{{selected.displayPrices}}</p>
     </b-form>
 </div>
 </template>
@@ -61,6 +62,15 @@ export default {
                 return null
             }
         }
+    },
+    umounted() {
+        var arr = []
+            this.selected.displayPrices.forEach(price => {
+                console.log(price)
+                arr[price.seatTypeId] = price
+                
+            })
+            this.selected.displayPrices = arr
     },
     computed: {
         optionsMovie() {

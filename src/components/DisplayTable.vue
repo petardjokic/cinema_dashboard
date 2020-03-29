@@ -116,7 +116,7 @@ export default {
                 genres: this.selected.genres,
                 productionCompanies: this.selected.productionCompanies
             }
-            this.$refs['movie-edit-modal'].hide()
+            this.$refs['display-edit-modal'].hide()
             return item
         },
         deleteDisplay() {

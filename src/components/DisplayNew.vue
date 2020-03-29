@@ -49,14 +49,22 @@ export default {
         },
         onSubmit() {
             var sPrices = []
-            const startsAt = this.selected.date + 'T' + this.selected.time + ':00.000'
-            Object.entries(this.selected.displayPrices).forEach(entry => {
-                sPrices.push({
-                    seatTypeId: entry[0],
-                    price: parseFloat(entry[1])
+            const startsAt = this.selected.date + 'T' + this.selected.time
+            if (this.selected.displayPrices[1].id == null) {
+                Object.entries(this.selected.displayPrices).forEach(entry => {
+                    sPrices.push({
+                        seatTypeId: entry[0],
+                        price: parseFloat(entry[1])
+                    })
                 })
-            })
-            var display = {movie: this.selected.movie, hall: this.selected.hall, startsAt: startsAt, displayPrices: sPrices}
+            }
+            var display = {
+                id: this.selected.id,
+                movie: this.selected.movie,
+                hall: this.selected.hall,
+                startsAt: startsAt,
+                displayPrices: this.selected.displayPrices
+            }
             console.log(display)
             axios.post(cinemaApi.BASE_URL + cinemaApi.SAVE_DISPLAY, display).then(response => {
                 response.data
