@@ -55,6 +55,7 @@
 <script>
 export default {
     mounted() {
+        console.log(this.selected)
         if (this.selected.genres.length > 0)
             this.selected.genres = this.selected.genres.map(genre => {
                 return genre.id
@@ -65,7 +66,12 @@ export default {
             })
     },
     props: {
-        selected: Object,
+        selected: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
         genres: {
             type: Array,
             default () {
@@ -100,8 +106,7 @@ export default {
             });
             return array
         }
-    },
-
+    }
 }
 </script>
 

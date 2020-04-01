@@ -21,14 +21,14 @@
 
         <template v-slot:row-details="row">
             <b-card>
-                <Movie :item="row.item"></Movie>
+                <Movie :id=row.item.id />
                 <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
             </b-card>
         </template>
     </b-table>
     <b-modal id="movie-edit-modal" size="lg" title="Edit movie" hide-footer>
         <div>
-            <MovieNew :selected=selected @movieSaved=updateMovie />
+            <MovieNew :id=selected.id @movieSaved=updateMovie />
         </div>
         <template v-slot:modal-footer="{ ok, cancel }">
             <b-button size="sm" variant="success" @click="saveMovie()">
@@ -64,7 +64,9 @@ export default {
     data() {
         return {
             fields: ['title', 'duration', 'releaseYear', 'show_details', 'edit', 'delete'],
-            selected: null
+            selected: {
+                id: null
+            }
         }
     },
     props: {

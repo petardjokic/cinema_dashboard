@@ -1,6 +1,6 @@
 <template>
 <div>
-    <MovieEntry :selected=selected :genres=genres :productionCompanies=productionCompanies />
+    <MovieEntry :selected=movie :genres=genres :productionCompanies=productionCompanies />
     <hr>
     <b-button type="submit" variant="primary" @click="onSubmit">Submit</b-button>
     <b-button type="reset" variant="danger" @click="onReset">Reset</b-button>
@@ -17,19 +17,23 @@ export default {
     },
     data() {
         return {
+            movie: {},
             genres: [],
             productionCompanies: []
         }
     },
     props: {
-        selected: Object
+        id: Number
     },
     created() {
+        const urlMovie = axios.get(cinemaApi.BASE_URL + cinemaApi.MOVIES + this.id)
         const urlGenres = axios.get(cinemaApi.BASE_URL + cinemaApi.GENRES)
         const urlProductionCompany = axios.get(cinemaApi.BASE_URL + cinemaApi.PRODUCTION_COMPANIES)
-        axios.all([urlGenres, urlProductionCompany]).then(axios.spread((...responses) => {
-            this.genres = responses[0].data
-            this.productionCompanies = responses[1].data
+        axios.all([urlMovie, urlGenres, urlProductionCompany]).then(axios.spread((...responses) => {
+            this.movie = responses[0].data
+            console.log(this.movie)
+            this.genres = responses[1].data
+            this.productionCompanies = responses[2].data
         })).catch(err => {
             //modal message and router go
             console.log(err)
@@ -61,7 +65,6 @@ export default {
                 this.selected = response.data
                 this.$emit('movieSaved')
             })
-
         }
     }
 }

@@ -21,7 +21,7 @@
 
         <template v-slot:row-details="row">
             <b-card>
-                <Display :display="findDisplay(row.item.id)" />
+                <Display :id="row.item.id" />
                 <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
             </b-card>
         </template>
@@ -88,10 +88,6 @@ export default {
         }
     },
     methods: {
-        findDisplay(rowItemId) {
-            const arr =this.items.filter(display => display.id === rowItemId)
-            return arr[0]
-        },
         setSelectedDisplay(row) {
             var display = this.findDisplay(row.item.id)
             this.selected = {

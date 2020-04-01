@@ -37,11 +37,12 @@
 export default {
     components: {},
     props: {
-        hall: Object,
-        display: Object,
-        show: Boolean
+        display: Object
     },
     computed: {
+        seats() {
+            return display.
+        },
         getRows() {
             var mapped = this.hall.seats.map(seat => seat.row)
             return new Set(mapped)
