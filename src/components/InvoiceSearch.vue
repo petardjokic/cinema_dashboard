@@ -41,7 +41,7 @@ export default {
         getInvoice() {
             if (this.invoiceId.length == 0)
                 this.data = null
-            axios.get(cinemaApi.BASE_URL + cinemaApi.INVOICES + this.invoiceId).then(response => {
+            axios.get(cinemaApi.BASE_URL + cinemaApi.INVOICES_DTO + this.invoiceId).then(response => {
                 console.log(response.data)
                 this.data = response.data
                 this.show = true

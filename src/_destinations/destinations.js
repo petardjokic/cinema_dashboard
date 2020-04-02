@@ -7,5 +7,6 @@ export const cinemaApi = {
     DISPLAYS: 'displays/',
     SAVE_DISPLAY: 'displays/save',
     HALLS: 'halls/',
-    INVOICES: 'invoices/'
+    INVOICES: 'invoices/',
+    INVOICES_DTO: 'invoices/dto/'
 }

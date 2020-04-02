@@ -1,6 +1,6 @@
 <template>
 <div v-if="display != null">
-    <b-tabs active content-class="mt-3">
+    <b-tabs content-class="mt-3">
         <b-tab title="Display">
             <SingleElementTable :item=display type="display" :vertical="false" />
             <SingleElementTable :item=display type="ticket" :vertical="false" />
@@ -13,8 +13,8 @@
         <b-tab lazy title="Movie">
             <Movie :id=display.movie.id />
         </b-tab>
-        <b-tab lazy title="Tickets">
-            <HallView :display=display />
+        <b-tab active lazy title="Tickets">
+            <HallView :id=display.id />
         </b-tab>
     </b-tabs>
 </div>
