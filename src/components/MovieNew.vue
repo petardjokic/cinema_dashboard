@@ -1,8 +1,8 @@
 <template>
-<div>
-    <MovieEntry :selected=movie :genres=genres :productionCompanies=productionCompanies />
+<div v-if="movie != null">
+    <MovieEntry :movie=movie />
     <hr>
-    <b-button type="submit" variant="primary" @click="onSubmit">Submit</b-button>
+    <b-button type="submit" variant="primary" @click="onSubmit">Save</b-button>
     <b-button type="reset" variant="danger" @click="onReset">Reset</b-button>
 </div>
 </template>
@@ -15,34 +15,14 @@ export default {
     components: {
         MovieEntry
     },
-    data() {
-        return {
-            movie: {},
-            genres: [],
-            productionCompanies: []
-        }
-    },
     props: {
-        id: Number
-    },
-    created() {
-        const urlMovie = axios.get(cinemaApi.BASE_URL + cinemaApi.MOVIES + this.id)
-        const urlGenres = axios.get(cinemaApi.BASE_URL + cinemaApi.GENRES)
-        const urlProductionCompany = axios.get(cinemaApi.BASE_URL + cinemaApi.PRODUCTION_COMPANIES)
-        axios.all([urlMovie, urlGenres, urlProductionCompany]).then(axios.spread((...responses) => {
-            this.movie = responses[0].data
-            console.log(this.movie)
-            this.genres = responses[1].data
-            this.productionCompanies = responses[2].data
-        })).catch(err => {
-            //modal message and router go
-            console.log(err)
-        })
+        movie: Object
     },
     methods: {
         onReset() {
             this.selected = {
                 title: '',
+                trailerUri: '',
                 releaseYear: null,
                 duration: null,
                 description: '',
@@ -51,19 +31,9 @@ export default {
             }
         },
         onSubmit() {
-            this.selected.genres = this.selected.genres.map(genre => {
-                return {
-                    id: genre
-                }
-            })
-            this.selected.productionCompanies = this.selected.productionCompanies.map(productionCompany => {
-                return {
-                    id: productionCompany
-                }
-            })
-            axios.post(cinemaApi.BASE_URL + cinemaApi.SAVE_MOVIE, this.selected).then(response => {
+            axios.post(cinemaApi.BASE_URL + cinemaApi.MOVIES, this.movie).then(response => {
                 this.selected = response.data
-                this.$emit('movieSaved')
+                this.$emit('movieSaved', {...this.selected})
             })
         }
     }

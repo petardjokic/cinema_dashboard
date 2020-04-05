@@ -1,20 +1,17 @@
 <template>
 <b-row>
-    <b-col></b-col>
     <b-col cols=12>
-        <b-jumbotron fluid bg-variant="primary" text-variant="white" border-variant="dark">
+        <b-jumbotron container-fluid bg-variant="primary" text-variant="white" border-variant="dark">
             <template v-slot:header>Movie Search</template>
 
             <template v-slot:lead>
-                This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
-                featured content or information.
+                Search for movies
             </template>
-
-            <hr class="my-4">          
+            <hr class="my-4">  
+            <MovieTable :items=listMovies @deleteMovie='removeFromList($event)' @updateMovie='updateMovie($event)'/>        
         </b-jumbotron>
-        <MovieTable :items=listMovies />
+        <!-- <MovieTable :items=listMovies @deleteMovie='removeFromList($event)' @updateMovie='updateMovie($event)'/> -->
     </b-col>
-    <b-col></b-col>
 </b-row>
 </template>
 
@@ -31,6 +28,22 @@ export default {
             searchParams: { 
             },
             listMovies: []
+        }
+    },
+    methods: {
+        updateMovie(movieArg){
+            const movie = this.listMovies.find(movie => movie.id === movieArg.id)
+            movie.name = movieArg.name
+            movie.title = movieArg.title
+            movie.trailerUri = movieArg.trailerUri
+            movie.releaseYear = movieArg.releaseYear
+            movie.duration = movieArg.duration
+            movie.description = movieArg.description
+            movie.genres = movieArg.genres
+            movie.productionCompanies = movieArg.productionCompanies
+        },
+        removeFromList(movieId) {
+            this.listMovies = this.listMovies.filter(movie => movie.id !== movieId)
         }
     },
     created() {

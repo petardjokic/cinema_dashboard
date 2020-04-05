@@ -1,11 +1,11 @@
 <template>
 <b-row>
     <b-col></b-col>
-    <b-col cols=12>
+    <b-col cols=7>
         <b-jumbotron fluid bg-variant="primary" text-variant="white" border-variant="dark">
             <template v-slot:header>New Movie</template>
             <hr class="my-4">
-            <MovieNew :selected=selected />
+            <MovieNew :movie=selected />
             
         </b-jumbotron>
     </b-col>
@@ -24,6 +24,7 @@ export default {
             selected: {
                 id: null,
                 title: "",
+                trailerUri: "",
                 releaseYear: null,
                 duration: null,
                 description: '',

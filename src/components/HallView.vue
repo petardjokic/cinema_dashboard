@@ -1,5 +1,5 @@
 <template>
-<div v-if="item != null">
+<div v-if="display != null">
     <b-row>
         <b-col cols="3">
             <h1>{{display.hall.name}}</h1>
@@ -17,41 +17,26 @@
     <p></p>
     <b-row>
     </b-row>
-    <b-row v-for="(row,index) in getRows" :key="index">
-        <b-card-group>
-            <div v-for="sa in getSeatsForRow(row)" :key="sa.seat.id">
-                <b-card :header="sa.seat.type.name" :header-bg-variant=resolveBgColor(sa.seat.type) header-text-variant="white" style="width: 8.9rem;" class="text-center">
-                    <b-card-text>Row: {{sa.seat.row}}<br />Column: {{sa.seat.column}}</b-card-text>
+    <b-row no-gutters v-for="(row,index) in getRows" :key="index">
+            <b-col v-for="sa in getSeatsForRow(row)" :key="sa.seat.id">
+                <b-card :header="sa.seat.type.name" :header-bg-variant=resolveBgColor(sa.seat.type) header-text-variant="white" style="width: 8,8rem"  class="text-center">
+                    <b-card-text>Seat: {{sa.seat.column}}</b-card-text>
                     <b-card-footer footer-tag="footer" :footer=resolveFooterText(sa) :footer-text-variant=resolveFooterBg(sa)>
                     </b-card-footer>
                 </b-card>
-                <b-button v-if="isFree(sa) && !isInCart(sa.seat.id)" variant="outline-success" @click="addToCart(sa.seat)">Add to cart {{isFree(sa.seat)}}</b-button>
-                <b-button v-if="isInCart(sa.seat.id)" variant="warning" @click="removeFromCart(sa.seat)">Remove</b-button>
-            </div>
-        </b-card-group>
+                <b-button block v-if="isFree(sa) && !isInCart(sa.seat.id)" variant="outline-success" @click="addToCart(sa.seat)">Add to cart {{isFree(sa.seat)}}</b-button>
+                <b-button block v-if="isInCart(sa.seat.id)" variant="warning" @click="removeFromCart(sa.seat)">Remove</b-button>
+            </b-col>
     </b-row>
 </div>
 </template>
 
 <script>
-import axios from 'axios'
-import {
-    cinemaApi
-} from '../_destinations/destinations.js'
-
 export default {
-    data() {
-        return {
-            item: null
-        }
-    },
     props: {
-        id: Number
+        display: Object
     },
     computed: {
-        display() {
-            return this.item
-        },
         seatsAvailability() {
             return this.display.seatsAvailability
         },
@@ -142,16 +127,6 @@ export default {
                 seatId: seat.id
             })
         }
-    },
-    mounted() {
-        const urlDisplay = cinemaApi.BASE_URL + cinemaApi.DISPLAYS + this.id
-        console.log(urlDisplay)
-        axios.get(urlDisplay).then(response => {
-            this.item = response.data
-            console.log(this.item)
-        }).catch(err => {
-            console.log(err)
-        })
     }
 }
 </script>

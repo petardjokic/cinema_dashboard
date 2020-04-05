@@ -6,14 +6,13 @@
             <template v-slot:header>Display Search</template>
 
             <template v-slot:lead>
-                This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
-                featured content or information.
+                Search for displays
             </template>
 
             <hr class="my-4">
 
         </b-jumbotron>
-        <DisplayTable :items=listDisplays />
+        <DisplayTable :displays=listDisplays />
     </b-col>
     <b-col></b-col>
 </b-row>

@@ -1,47 +1,48 @@
 <template>
 <div>
-    <b-table fixed hover small table-variant="primary" :items=items :fields=fields striped responsive="sm">
+    <b-table hover small table-variant="primary" :items=items :fields=fields striped responsive>
         <template v-slot:cell(show_details)="row">
-            <b-button size="sm" variant='primary' @click="row.toggleDetails">
+            <b-button size="sm" variant='primary' @click=showDetails(row)>
                 {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
-            </b-button>
-        </template>
-
-        <template v-slot:cell(edit)="row">
-            <b-button v-b-modal.movie-edit-modal size="sm" variant='success' @click="setSelectedMovie(row)">
-                <b-icon icon="pencil"></b-icon>
-            </b-button>
-        </template>
-
-        <template v-slot:cell(delete)="row">
-            <b-button v-b-modal.movie-delete-modal size="sm" variant='danger' @click="setSelectedMovie(row)">
-                <b-icon icon="trash"></b-icon>
             </b-button>
         </template>
 
         <template v-slot:row-details="row">
             <b-card>
-                <Movie :id=row.item.id />
-                <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+                <Movie :movie=selected />
+                <b-button size="sm" @click=row.toggleDetails>Hide Details</b-button>
             </b-card>
         </template>
+
+        <template v-slot:cell(edit)="row">
+            <b-button v-b-modal.movie-edit-modal size="sm" variant='success' @click="setSelectedMovie(row.item)">
+                <b-icon icon="pencil"></b-icon>
+            </b-button>
+        </template>
+
+        <template v-slot:cell(delete)="row">
+            <b-button v-b-modal.movie-delete-modal size="sm" variant='danger' @click="setSelectedMovie(row.item)">
+                <b-icon icon="trash"></b-icon>
+            </b-button>
+        </template>
     </b-table>
+    <!-- MODALS -->
     <b-modal id="movie-edit-modal" size="lg" title="Edit movie" hide-footer>
         <div>
-            <MovieNew :id=selected.id @movieSaved=updateMovie />
+            <MovieNew :movie=selected @movieSaved='updateMovie($event)' />
         </div>
-        <template v-slot:modal-footer="{ ok, cancel }">
-            <b-button size="sm" variant="success" @click="saveMovie()">
-                OK
+        <template v-slot:modal-footer="{cancel}">
+            <b-button size="sm" variant="success" >
+                Save
             </b-button>
             <b-button size="sm" variant="danger" @click="cancel()">
                 Cancel
             </b-button>
         </template>
     </b-modal>
-    <b-modal static id="movie-delete-modal" title="Delete Movie" hide-footer>
+    <b-modal id="movie-delete-modal" title="Delete Movie">
         <p v-if="selected != null" class="my-4">Are you sure you want to delete <strong>{{selected.title}}</strong>?</p>
-        <template v-slot:modal-footer="{ ok, cancel }">
+        <template v-slot:modal-footer="{cancel}">
             <b-button size="sm" variant="danger" @click="deleteMovie()">
                 Delete
             </b-button>
@@ -54,6 +55,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+import {
+    cinemaApi
+} from '../_destinations/destinations.js'
 import Movie from './Movie.vue'
 import MovieNew from './MovieNew.vue'
 export default {
@@ -64,9 +69,7 @@ export default {
     data() {
         return {
             fields: ['title', 'duration', 'releaseYear', 'show_details', 'edit', 'delete'],
-            selected: {
-                id: null
-            }
+            selected: null
         }
     },
     props: {
@@ -74,34 +77,34 @@ export default {
     },
     methods: {
         setSelectedMovie(movie) {
-            this.selected = {
-                id: movie.item.id,
-                title: movie.item.title,
-                trailerUri: movie.item.trailerUri,
-                description: movie.item.description,
-                duration: movie.item.duration,
-                releaseYear: movie.item.releaseYear,
-                genres: movie.item.genres,
-                productionCompanies: movie.item.productionCompanies
-            }
+            const movieId = movie.id
+            this.selected = null
+            const urlMovie = cinemaApi.BASE_URL + cinemaApi.MOVIES + movieId
+            console.log(urlMovie)
+            axios.get(urlMovie).then(response => {
+                this.selected = response.data
+            }).catch(err => {
+                console.log(err)
+            })
         },
-        updateMovie() {
-            var item = this.items.find(item => item.id === this.selected.id)
-            item = {
-                id: this.selected.id,
-                title: this.selected.title,
-                trailerUri: this.selected.trailerUri,
-                description: this.selected.description,
-                duration: this.selected.duration,
-                releaseYear: this.selected.releaseYear,
-                genres: this.selected.genres,
-                productionCompanies: this.selected.productionCompanies
-            }
-            this.$refs['movie-edit-modal'].hide()
-            return item
+        showDetails(row) {
+            this.setSelectedMovie(row.item)
+            row.toggleDetails()
+        },
+        updateMovie(movie) {
+            this.$emit('updateMovie', movie)
+            this.$bvModal.hide('movie-edit-modal')
         },
         deleteMovie() {
-            
+            const urlMovie = cinemaApi.BASE_URL + cinemaApi.MOVIES + this.selected.id
+            var movieId = this.selected.id
+            axios.delete(urlMovie).then(response => {
+                this.selected = response.data
+                this.$emit('deleteMovie', movieId)
+                this.$bvModal.hide('movie-delete-modal')
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }
 }

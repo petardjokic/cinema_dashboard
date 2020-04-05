@@ -1,10 +1,17 @@
 <template>
 <div>
-    <b-table fixed hover small :items=getItems :fields=fields striped responsive="sm">
+    <b-table hover small :items=items :fields=fields striped responsive>
         <template v-slot:cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+            <b-button size="sm" @click=showDetails(row) class="mr-2">
                 {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
             </b-button>
+        </template>
+
+        <template v-slot:row-details="row">
+            <b-card>
+                <Display :display=selected />
+                <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+            </b-card>
         </template>
 
         <template v-slot:cell(edit)="row">
@@ -17,15 +24,9 @@
             <b-button v-b-modal.display-delete-modal size="sm" variant='danger' @click="setSelectedDisplay(row)">
                 <b-icon icon="trash"></b-icon>
             </b-button>
-        </template>
-
-        <template v-slot:row-details="row">
-            <b-card>
-                <Display :id="row.item.id" />
-                <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
-            </b-card>
-        </template>
+        </template>        
     </b-table>
+    <!-- MODALS -->
     <b-modal id="display-edit-modal" size="lg" title="Edit display" hide-footer>
         <div>
             <DisplayNew :selected=selected @displaySaved=updateDisplay />
@@ -54,6 +55,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+import {
+    cinemaApi
+} from '../_destinations/destinations.js'
 import Display from './Display.vue'
 import DisplayNew from './DisplayNew.vue'
 export default {
@@ -68,12 +73,12 @@ export default {
         }
     },
     props: {
-        items: Array
+        displays: Array
     },
     computed: {
-        getItems() {
+        items() {
             var mapped = []
-            this.items.forEach(disp => {
+            this.displays.forEach(disp => {
                 if (disp != null) {
                     mapped.push({
                         id: disp.id,
@@ -88,17 +93,20 @@ export default {
         }
     },
     methods: {
-        setSelectedDisplay(row) {
-            var display = this.findDisplay(row.item.id)
-            this.selected = {
-                id: display.id,
-                movie: display.movie,
-                hall: display.hall,
-                time: display.startsAt.split('T')[1],
-                date: display.startsAt.split('T')[0],
-                displayPrices: display.displayPrices,
-                tickets: display.tickets
-            }
+        setSelectedDisplay(display) {
+            let displayId = display.id
+            const urlDisplay = cinemaApi.BASE_URL + cinemaApi.DISPLAYS + displayId
+            console.log(urlDisplay)
+            axios.get(urlDisplay).then(response => {
+                this.selected = response.data
+                console.log(this.selected)
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        showDetails(row) {
+            this.setSelectedDisplay(row.item)
+            row.toggleDetails()
         },
         updateDisplay() {
             var item = this.items.find(item => item.id === this.selected.id)
