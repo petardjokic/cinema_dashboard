@@ -5,7 +5,7 @@
         <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark">
             <template v-slot:header>New Display</template>
             <hr class="my-4">
-            <DisplayNew :selected=selected />
+            <DisplayNew :display=display />
         </b-jumbotron>
     </b-col>
     <b-col></b-col>
@@ -20,13 +20,14 @@ export default {
     },
     data() {
         return {
-            selected: {
+            display: {
                 id: null,
                 movie: null,
                 hall: null,
-                time: null,
-                date: null,
-                displayPrices: []
+                startsAt: null,
+                prices: [],
+                tickets: [],
+                seatsAvailability: []
             }
         }
     }
