@@ -1,5 +1,5 @@
 <template>
-<div >
+<div>
     <b-form>
         <b-row>
             <b-col>
@@ -53,7 +53,6 @@
             </b-col>
         </b-row>
         <b-row>
-
             <b-col>
                 <b-form-textarea v-model=movie.description id="textarea-small" placeholder="Enter description"></b-form-textarea>
             </b-col>
@@ -83,8 +82,7 @@ export default {
         return {
             dummyArray: [],
             genres: [],
-            productionCompanies: [],
-            ready: false
+            productionCompanies: []
         }
     },
     props: {
@@ -129,7 +127,6 @@ export default {
         axios.all([urlGenres, urlProductionCompany]).then(axios.spread((...responses) => {
             this.genres = responses[0].data
             this.productionCompanies = responses[1].data
-            this.ready = true
         })).catch(err => {
             //modal message and router go
             console.log(err)

@@ -17,17 +17,19 @@
     <p></p>
     <b-row>
     </b-row>
+    <b-container fluid>
     <b-row no-gutters v-for="(row,index) in getRows" :key="index">
-            <b-col v-for="sa in getSeatsForRow(row)" :key="sa.seat.id">
-                <b-card :header="sa.seat.type.name" :header-bg-variant=resolveBgColor(sa.seat.type) header-text-variant="white" style="width: 8,8rem"  class="text-center">
-                    <b-card-text>Seat: {{sa.seat.column}}</b-card-text>
-                    <b-card-footer footer-tag="footer" :footer=resolveFooterText(sa) :footer-text-variant=resolveFooterBg(sa)>
-                    </b-card-footer>
+            <b-col cols=1 v-for="sa in getSeatsForRow(row)" :key="sa.seat.id">
+                <b-card :header="sa.seat.type.name" :bg-variant=resolveFooterBg(sa) text-variant='white' :header-bg-variant=resolveBgColor(sa.seat.type) header-text-variant="white" class="text-center">
+                    <b-card-text>Row: {{sa.seat.row}} <br/> Seat: {{sa.seat.column}}</b-card-text>
+                    <!-- <b-card-footer footer-tag="footer" :footer=resolveFooterText(sa) :footer-text-variant=resolveFooterBg(sa)>
+                    </b-card-footer> -->
                 </b-card>
                 <b-button block v-if="isFree(sa) && !isInCart(sa.seat.id)" variant="outline-success" @click="addToCart(sa.seat)">Add to cart {{isFree(sa.seat)}}</b-button>
                 <b-button block v-if="isInCart(sa.seat.id)" variant="warning" @click="removeFromCart(sa.seat)">Remove</b-button>
             </b-col>
     </b-row>
+    </b-container>
 </div>
 </template>
 
@@ -68,13 +70,13 @@ export default {
             if (event != null) {
                 const seat = event.seats.find(seat => seat.id === sa.seat.id)
                 if (seat != null) {
-                    return 'IN CART'
+                    return 'C'
                 }
             }
             if (this.seatsAvailability != null) {
                 if (sa.free === false)
-                    return "TAKEN"
-                return "FREE"
+                    return "T"
+                return "F"
             } else {
                 return "dark"
             }

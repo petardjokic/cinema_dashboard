@@ -7,8 +7,8 @@
             <template v-slot:lead>
                 Search for movies
             </template>
-            <hr class="my-4">  
-            <MovieTable :items=listMovies @deleteMovie='removeFromList($event)' @updateMovie='updateMovie($event)'/>        
+            <hr class="my-4">
+            <MovieTable :items=listMovies @deleteMovie='removeFromList($event)' @updateMovie='updateMovie($event)' />
         </b-jumbotron>
         <!-- <MovieTable :items=listMovies @deleteMovie='removeFromList($event)' @updateMovie='updateMovie($event)'/> -->
     </b-col>
@@ -17,7 +17,9 @@
 
 <script>
 import axios from 'axios'
-import {cinemaApi} from '../_destinations/destinations.js'
+import {
+    cinemaApi
+} from '../_destinations/destinations.js'
 import MovieTable from "./MovieTable"
 export default {
     components: {
@@ -25,13 +27,12 @@ export default {
     },
     data() {
         return {
-            searchParams: { 
-            },
+            searchParams: {},
             listMovies: []
         }
     },
     methods: {
-        updateMovie(movieArg){
+        updateMovie(movieArg) {
             const movie = this.listMovies.find(movie => movie.id === movieArg.id)
             movie.name = movieArg.name
             movie.title = movieArg.title

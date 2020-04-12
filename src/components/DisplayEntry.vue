@@ -1,89 +1,78 @@
 <template>
-<div>
+<div v-if="display != null">
     <b-form>
-        <b-form-group id="fieldset-0" description="Display ID" label="ID:" label-for="input-0">
-            <b-form-input v-model=display.id id="input-0" type="number" disabled></b-form-input>
-        </b-form-group>
+        <b-row>
+            <b-col cols=6>
+                <b-form-group id="fieldset-id" description="Display ID" label="ID:" label-for="input-id">
+                    <b-form-input v-model=display.id id="input-id" type="number" disabled></b-form-input>
+                </b-form-group>
+            </b-col>
+            <b-col></b-col>
+        </b-row>
+        <b-row>
+            <b-col cols=6>
+                <b-form-group id="fieldset-category" description="Select category" label="Category:" label-for="input-category">
+                    <b-form-select v-model=display.category.id :options=optionsCategory></b-form-select>
+                </b-form-group>
+            </b-col>
+            <b-col></b-col>
+        </b-row>
         <b-row>
             <b-col>
-                <b-form-group id="fieldset-1" description="Select movie" label="Movie:" label-for="input-1">
-                    <b-form-select v-model=display.movie :options=optionsMovie></b-form-select>
+                <b-form-group id="fieldset-movie" description="Select movie" label="Movie:" label-for="input-movie">
+                    <b-form-select v-model=display.movie.id :options=optionsMovie></b-form-select>
                 </b-form-group>
             </b-col>
             <b-col>
-                <b-form-group id="fieldset-2" description="Select Hall" label="Hall:" label-for="input-2">
-                    <b-form-select v-model=display.hall :options=optionsHall></b-form-select>
+                <b-form-group id="fieldset-hall" description="Select Hall" label="Hall:" label-for="input-hall">
+                    <b-form-select v-model=display.hall.id :options=optionsHall></b-form-select>
                 </b-form-group>
             </b-col>
         </b-row>
         <b-row>
             <b-col>
-                <b-form-group id="fieldset-3" description="Enter time" label="Time:" label-for="input-3">
-                    <b-form-input v-model=time id="input-3" type="time"></b-form-input>
+                <b-form-group id="fieldset-time" description="Enter time" label="Time:" label-for="input-time">
+                    <b-form-input v-model=time id="input-time" type="time" @change="startsAtChanged"></b-form-input>
                 </b-form-group>
             </b-col>
             <b-col>
-                <b-form-group id="fieldset-4" description="Enter date" label="Date:" label-for="input-4">
-                    <b-form-input v-model=date id="input-4" type="date"></b-form-input>
+                <b-form-group id="fieldset-date" description="Enter date" label="Date:" label-for="input-date">
+                    <b-form-input v-model=date id="input-date" type="date" @change="startsAtChanged"></b-form-input>
                 </b-form-group>
             </b-col>
         </b-row>
-        <div v-if="display.hall != null">
-            <b-form-group v-for="(type,index) in seatTypes" :key="index" :id="'fieldset-5' + type.name" :description="'Enter price for seats ' + type.name" :label="'Price ' + type.name + ':'" label-for="input-5">
-                <b-form-input v-model=display.prices[type.id].price :id="'input-5' + index" type="number"></b-form-input>
-            </b-form-group>
-        </div>
-
-        <!-- <p>Movie ID: {{display.movie}}</p>
-        <p>Hall ID: {{display.hall}}</p> -->
-        <p>TIME: {{display.time}}</p>
-        <p>DATE: {{display.date}}</p>
-        <p v-for="(type,index) in seatTypes" :key="index + '' + index">
-            ID: {{type.id}} PRICE: {{display.prices[type.id]}}
-        </p>
-        <p>{{display.prices}}</p>
+        <p>MOVIE: {{display.movie.id}}</p>
+        <p>HALL: {{display.hall.id}}</p>
+        <p>CATEGORY: {{display.category.id}}</p>
+        <p>STARTS AT: {{display.startsAt}}</p>
     </b-form>
 </div>
 </template>
 
 <script>
+import axios from 'axios'
+import {
+    cinemaApi
+} from '../_destinations/destinations.js'
 export default {
     data() {
         return {
-            time: '23:11',
-            date: '2020-01-23'
+            movies: [],
+            halls: [],
+            categories: [],
+            time: '',
+            date:''
         }
     },
     props: {
         display: Object,
-        movies: {
-            type: Array,
-            default () {
-                return null
-            }
-        },
-        halls: {
-            type: Array,
-            default () {
-                return null
-            }
-        }
-    },
-    mounted() {
-        var arr = []
-            this.display.prices.forEach(price => {
-                console.log(price)
-                arr[price.seatTypeId] = price
-                
-            })
-            this.display.prices = arr
     },
     computed: {
         optionsMovie() {
             var array = []
             this.movies.forEach(movie => {
                 array.push({
-                    value: movie,
+                    value: movie.id,
                     text: movie.title
                 })
             });
@@ -93,26 +82,46 @@ export default {
             var array = []
             this.halls.forEach(hall => {
                 array.push({
-                    value: hall,
+                    value: hall.id,
                     text: hall.name
                 })
             });
             return array
         },
-        seatTypes() {
-            var obj = {}
-            var mapped = null
-            if (this.display.hall != null) {
-                mapped = this.display.hall.seats.map(seat => seat.seatType.id)
-                mapped.forEach(seatTypeId => {
-                    if (obj[seatTypeId] == null) {
-                        obj[seatTypeId] = this.display.hall.seats.map(seat => seat.seatType).find(seatType => seatType.id == seatTypeId)
-                    }
+        optionsCategory() {
+            var array = []
+            this.categories.forEach(category => {
+                array.push({
+                    value: category.id,
+                    text: category.name
                 })
-            }
-            return obj
+            });
+            return array
+        },
+        startsAt() {
+            return this.date + 'T' + this.time
         }
-    }
+    },
+    methods: {
+        startsAtChanged() {
+            this.display.startsAt = this.startsAt
+        }
+    },
+    mounted() {
+        const urlMovies = axios.get(cinemaApi.BASE_URL + cinemaApi.MOVIES)
+        const urlHalls = axios.get(cinemaApi.BASE_URL + cinemaApi.HALLS)
+        const urlCategories = axios.get(cinemaApi.BASE_URL + cinemaApi.CATEGORIES)
+        axios.all([urlMovies, urlHalls, urlCategories]).then(axios.spread((...responses) => {
+            this.movies = responses[0].data
+            this.halls = responses[1].data
+            this.categories = responses[2].data
+            this.time = this.display.startsAt.split('T')[1].split('.')[0]
+            this.date = this.display.startsAt.split('T')[0]
+        })).catch(err => {
+            //modal message and router go
+            console.log(err)
+        })
+    },
 }
 </script>
 

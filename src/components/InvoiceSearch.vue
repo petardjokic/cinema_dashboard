@@ -6,12 +6,12 @@
             <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark">
                 <template v-slot:header>Search Invoice</template>
                 <template v-slot:lead>
-                    <b-form-input v-model=invoiceId @change="getInvoice" type='number' placeholder="Enter Invoice ID"></b-form-input>
+                    <b-form-input v-model=invoiceId type='number' placeholder="Enter Invoice ID"></b-form-input>
+                    <b-button v-if="invoiceId.length > 0" block variant='success' @click='getInvoice'>Find</b-button>
                 </template>
-                {{invoiceId}}
                 <hr class="my-4">
-                <div v-if="show">
-                    <Invoice :itemData=data />
+                <div>
+                    <Invoice :itemData=data @freezeInvoice='freezeInvoice()' />
                 </div>
             </b-jumbotron>
         </b-col>
@@ -33,22 +33,31 @@ export default {
     data() {
         return {
             invoiceId: '',
-            data: null,
-            show: false
+            data: null
         }
     },
     methods: {
         getInvoice() {
-            if (this.invoiceId.length == 0)
-                this.data = null
+            this.data = null
             axios.get(cinemaApi.BASE_URL + cinemaApi.INVOICES_DTO + this.invoiceId).then(response => {
                 console.log(response.data)
                 this.data = response.data
-                this.show = true
             }).catch(err => {
                 console.log(err)
             })
-        }
+        },
+        freezeInvoice() {
+        var invoiceId = this.data.id
+        const urlInvoice = cinemaApi.BASE_URL + cinemaApi.INVOICES + invoiceId
+        axios.delete(urlInvoice).then(response => {
+            if(response.data) {
+                this.data = response.data
+                console.log("Invoice freezed")
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     }
 }
 </script>

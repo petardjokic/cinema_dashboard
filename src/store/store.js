@@ -13,11 +13,22 @@ export const store = new Vuex.Store({
             var num = 0
             state.cart.forEach(event => num += event.seats.length)
             return num
+        },
+        getTransformedForInvoice(state) {
+            var cart = {
+                cartItemsUnchecked: []
+            }
+            state.cart.forEach(event => {
+                event.seats.forEach(seat => {
+                    cart.cartItemsUnchecked.push({ displayId: event.display.id, seatId: seat.id })
+                })
+            })
+            return cart
         }
     },
     mutations: {
         removeFromCart(state, DispSeat) {
-            const event = state.cart.find(event => event.display.id === DispSeat.display.id)
+            const event = state.cart.find(event => event.display.id === DispSeat.displayId)
             event.seats = event.seats.filter(seat => seat.id !== DispSeat.seatId)
             state.cart = state.cart.filter(event => event.seats.length > 0)
         },

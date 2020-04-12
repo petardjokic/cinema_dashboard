@@ -1,6 +1,6 @@
 <template>
 <div>
-    <b-table hover small table-variant="primary" :items=items :fields=fields striped responsive>
+    <b-table hover small table-variant="dark" :items=items :fields=fields striped responsive>
         <template v-slot:cell(show_details)="row">
             <b-button size="sm" variant='primary' @click=showDetails(row)>
                 {{ row.detailsShowing ? 'Hide' : 'Show'}} Details

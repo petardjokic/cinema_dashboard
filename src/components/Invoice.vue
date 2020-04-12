@@ -1,14 +1,20 @@
 <template>
 <div v-if="itemData != null">
-    <b-table fixed small stacked hover :items=events caption-top>
+    <b-table fixed small stacked :items=events caption-top>
         <template v-slot:table-caption>
             <p>Invoice ID: {{invoice.id}}</p>
             <p>Time: {{invoice.time}}</p>
             <p>Date: {{invoice.date}}</p>
-            <p>Active: {{invoice.active}}</p>
+            <p>Active: <b-button pressed size='sm' :variant="invoice.active ? 'success': 'danger'">
+                    {{invoice.active ? 'ACTIVE': 'FREEZED'}}
+                </b-button>
+                <b-button v-if="invoice.active" @click="freezeInvoice" size='sm' variant='danger'>
+                    Freeze
+                </b-button>
+            </p>
         </template>
         <template v-slot:cell(tickets)="data">
-            <b-table fixed borderless small :items="data.item.tickets"></b-table>
+            <b-table fixed hover borderless small :items="data.item.tickets"></b-table>
         </template>
     </b-table>
 </div>
@@ -36,7 +42,7 @@ export default {
             return computedInvoice
         },
         events() {
-            var events = []
+            let events = []
             if (this.itemData != null) {
                 this.itemData.events.forEach(event => {
                     events.push({
@@ -60,6 +66,9 @@ export default {
                     type: ticket.seat.type.name
                 }
             })
+        },
+        freezeInvoice() {
+            this.$emit('freezeInvoice')
         }
     }
 }

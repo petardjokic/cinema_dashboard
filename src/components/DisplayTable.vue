@@ -15,13 +15,13 @@
         </template>
 
         <template v-slot:cell(edit)="row">
-            <b-button v-b-modal.display-edit-modal size="sm" variant='success' @click="setSelectedDisplay(row)">
+            <b-button v-b-modal.display-edit-modal size="sm" variant='success' @click="setSelectedDisplay(row.item)">
                 <b-icon icon="pencil"></b-icon>
             </b-button>
         </template>
 
         <template v-slot:cell(delete)="row">
-            <b-button v-b-modal.display-delete-modal size="sm" variant='danger' @click="setSelectedDisplay(row)">
+            <b-button v-b-modal.display-delete-modal size="sm" variant='danger' @click="setSelectedDisplay(row.item)">
                 <b-icon icon="trash"></b-icon>
             </b-button>
         </template>        
@@ -29,7 +29,7 @@
     <!-- MODALS -->
     <b-modal id="display-edit-modal" size="lg" title="Edit display" hide-footer>
         <div>
-            <DisplayNew :selected=selected @displaySaved=updateDisplay />
+            <DisplayNew :display=selected @displaySaved='updateDisplay($event)' />
         </div>
         <template v-slot:modal-footer="{ ok, cancel }">
             <b-button size="sm" variant="success" @click="saveDisplay()">
@@ -40,7 +40,7 @@
             </b-button>
         </template>
     </b-modal>
-    <b-modal static id="display-delete-modal" title="Delete display" hide-footer>
+    <b-modal static id="display-delete-modal" title="Delete display">
         <p v-if="selected != null" class="my-4">Are you sure you want to delete?</p>
         <template v-slot:modal-footer="{ ok, cancel }">
             <b-button size="sm" variant="danger" @click="deleteDisplay()">
@@ -108,23 +108,20 @@ export default {
             this.setSelectedDisplay(row.item)
             row.toggleDetails()
         },
-        updateDisplay() {
-            var item = this.items.find(item => item.id === this.selected.id)
-            item = {
-                id: this.selected.id,
-                title: this.selected.title,
-                trailerUri: this.selected.trailerUri,
-                description: this.selected.description,
-                duration: this.selected.duration,
-                releaseYear: this.selected.releaseYear,
-                genres: this.selected.genres,
-                productionCompanies: this.selected.productionCompanies
-            }
-            this.$refs['display-edit-modal'].hide()
-            return item
+        updateDisplay(display) {
+            this.$emit('updateDisplay', display)
+            this.$bvModal.hide('display-edit-modal')
         },
         deleteDisplay() {
-
+            const urlDisplay = cinemaApi.BASE_URL + cinemaApi.DISPLAYS + this.selected.id
+            var displayId = this.selected.id
+            axios.delete(urlDisplay).then(response => {
+                this.selected = response.data
+                this.$emit('deleteDisplay', displayId)
+                this.$bvModal.hide('display-delete-modal')
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }
 }

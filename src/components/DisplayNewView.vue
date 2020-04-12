@@ -22,10 +22,12 @@ export default {
         return {
             display: {
                 id: null,
-                movie: null,
-                hall: null,
-                startsAt: null,
-                prices: [],
+                movie: {},
+                hall: {},
+                startsAt: '2020-04-04T13:35:06.517',
+                category: {
+                    prices: []
+                },
                 tickets: [],
                 seatsAvailability: []
             }

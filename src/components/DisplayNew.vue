@@ -1,6 +1,6 @@
 <template>
 <div>
-    <DisplayEntry :display=display :movies=movies :halls=halls />
+    <DisplayEntry :display=display />
     <hr>
     <b-button type="submit" variant="primary" @click="onSubmit">Submit</b-button>
     <b-button type="reset" variant="danger" @click="onReset">Reset</b-button>
@@ -17,25 +17,8 @@ export default {
     components: {
         DisplayEntry
     },
-    data() {
-        return {
-            movies: [],
-            halls: []
-        }
-    },
     props: {
         display: Object
-    },
-    created() {
-        const urlMovies = axios.get(cinemaApi.BASE_URL + cinemaApi.MOVIES)
-        const urlHalls = axios.get(cinemaApi.BASE_URL + cinemaApi.HALLS)
-        axios.all([urlMovies, urlHalls]).then(axios.spread((...responses) => {
-            this.movies = responses[0].data
-            this.halls = responses[1].data
-        })).catch(err => {
-            //modal message and router go
-            console.log(err)
-        })
     },
     methods: {
         onReset() {
@@ -43,18 +26,30 @@ export default {
                 id: null,
                 movie: null,
                 hall: null,
-                startsAt: null,
+                startsAt: '',
                 prices: [],
                 tickets: [],
                 seatsAvailability: []
             }
         },
         onSubmit() {
-            axios.post(cinemaApi.BASE_URL + cinemaApi.DISPLAY, {}).then(response => {
-                response.data
+            var displayToSend = {
+                id: this.display.id,
+                movie: {
+                    id: this.display.movie.id
+                },
+                hall: {
+                    id:this.display.hall.id
+                },
+                category: {
+                    id:this.display.category.id
+                },
+                startsAt: this.display.startsAt
+            }
+            axios.post(cinemaApi.BASE_URL + cinemaApi.DISPLAYS, displayToSend).then(response => {
                 this.$emit('displaySaved', response.data)
             }).catch(err => {
-                console.log(err)
+                console.log(err.response.data)
             })
         }
     }

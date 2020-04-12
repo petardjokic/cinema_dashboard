@@ -6,6 +6,11 @@
 
 <script>
 export default {
+    data() {
+        return {
+            variants: ['warning', 'danger', 'success', 'light']
+        }
+    },
     props: {
         item: Object,
         type: String,
@@ -47,36 +52,16 @@ export default {
             return [movie]
         },
         convertTicket() {
-            // const tickets = this.item.tickets
-            // const classic = this.item.hall.seats.filter(seat => seat.seatType.id === 1)
-            // const vip = this.item.hall.seats.filter(seat => seat.seatType.id === 2)
-            // const love = this.item.hall.seats.filter(seat => seat.seatType.id === 3)
-
-            // var classicFree = classic.length - this.countTaken(classic, tickets)
-            // var vipFree = vip.length - this.countTaken(vip, tickets)
-            // var loveFree = love.length - this.countTaken(love, tickets)
-            return [{
-                    type: "Classic",
-                    price: this.item.prices[0].price,
-                    free: 0,
-                    total: 0,
-                    _rowVariant: 'primary'
-                },
-                {
-                    type: "VIP",
-                    price: this.item.prices[1].price,
-                    free: 0,
-                    total: 0,
-                    _rowVariant: 'success'
-                },
-                {
-                    type: "Love",
-                    price: this.item.prices[2].price,
-                    free: 0,
-                    total: 0,
-                    _rowVariant: 'danger'
-                }
-            ]
+            var arr = []
+            var br = 0
+            this.item.prices.forEach(displayPrice => {
+                arr.push({
+                    seat: displayPrice.seatType.name,
+                    price: displayPrice.price,
+                    _rowVariant: this.variants[br++ % 4]
+                })
+            });
+            return arr
         },
         countTaken(type, tickets) {
             var typeTaken = []
