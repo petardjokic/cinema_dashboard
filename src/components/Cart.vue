@@ -1,11 +1,11 @@
 <template>
 <div class="cart">
     <div v-for="display in items" :key="display.id">
-        <b-table fixed small :fields=fields :items="display.seats" caption-top>
+        <b-table responsive small :fields=fields :items="display.seats" caption-top>
             <template v-slot:table-caption>{{display.movie}}, {{display.hall}} {{display.date}}</template>
             <template v-slot:cell(remove)="row">
                 <b-button variant="danger" size="sm" @click="removeFromCart(display.id, row.item.id)" class="mr-2">
-                    Remove {{display.id}} - {{row.item.id}}
+                    Remove
                 </b-button>
             </template>
         </b-table>
@@ -19,6 +19,7 @@ import axios from 'axios'
 import {
     cinemaApi
 } from '../_destinations/destinations.js'
+
 export default {
     data() {
         return {
@@ -63,6 +64,8 @@ export default {
         printCart() {
             axios.post(cinemaApi.BASE_URL + cinemaApi.INVOICES, this.transformedForSave).then(response => {
                 console.log(response.data)
+                this.$emit('showModal', response.data.invoice)
+                this.$store.dispatch('emptyCart');
             }).catch(err => {
                 console.log(err.response)
             })

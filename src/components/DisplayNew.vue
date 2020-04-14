@@ -47,7 +47,10 @@ export default {
                 startsAt: this.display.startsAt
             }
             axios.post(cinemaApi.BASE_URL + cinemaApi.DISPLAYS, displayToSend).then(response => {
+                response.data._rowVariant = 'success'
+                console.log(response.data)
                 this.$emit('displaySaved', response.data)
+                this.$router.push('/display-search')
             }).catch(err => {
                 console.log(err.response.data)
             })

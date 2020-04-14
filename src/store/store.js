@@ -39,6 +39,9 @@ export const store = new Vuex.Store({
                 state.cart.push(event)
             }
             event.seats.push(dispSeatObj.seat)
+        },
+        emptyCart(state) {
+            state.cart = []
         }
     },
     actions: {
@@ -47,6 +50,9 @@ export const store = new Vuex.Store({
         },
         addToCart(context, DispSeatObj) {
             context.commit('addToCart', DispSeatObj)
+        },
+        emptyCart(context) {
+            context.commit('emptyCart')
         }
     },
     state: {

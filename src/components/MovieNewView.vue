@@ -5,7 +5,7 @@
         <b-jumbotron fluid bg-variant="primary" text-variant="white" border-variant="dark">
             <template v-slot:header>New Movie</template>
             <hr class="my-4">
-            <MovieNew :movie=selected />
+            <MovieNew :movie=selected @movieSaved=goToMovieTable />
             
         </b-jumbotron>
     </b-col>
@@ -32,6 +32,9 @@ export default {
                 productionCompanies: []
             }
         }
+    },
+    methods() {
+        this.$router.push('/movie-search')
     }
 }
 </script>

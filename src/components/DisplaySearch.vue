@@ -11,7 +11,7 @@
             <hr class="my-4">
 
         </b-jumbotron>
-        <DisplayTable :displays=listDisplays @deleteDisplay='removeFromList($event)' @updateDisplay='updateDisplay($event)' />
+        <DisplayTable :displays=listDisplays @cancelDisplay='cancelDisplay($event)' @updateDisplay='updateDisplay($event)' />
     </b-col>
 </b-row>
 </template>
@@ -39,8 +39,13 @@ export default {
             display.hall = displayArg.hall
             display.startsAt = displayArg.startsAt
         },
-        removeFromList(displayId) {
-            this.listDisplays = this.listDisplays.filter(display => display.id !== displayId)
+        cancelDisplay(displayId) {
+            const disp = this.listDisplays.find(display => display.id === displayId)
+            console.log("Before")
+            console.log(disp)
+            disp.active = false
+            console.log("After")
+            console.log(disp)
         }
     },
     created() {
