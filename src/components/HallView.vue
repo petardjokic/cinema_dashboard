@@ -5,7 +5,7 @@
             <h1>{{display.hall.name}}</h1>
         </b-col>
         <b-col class="d-none d-lg-block" cols="6">
-            <b-card border-variant="dark" header="CANVAS" align="center">
+            <b-card border-variant="dark" header-bg-variant="secondary" header="CANVAS" align="center" no-body>
             </b-card>
         </b-col>
         <b-col>
@@ -17,19 +17,17 @@
     <p></p>
     <b-row>
     </b-row>
-    <b-container fluid>
     <b-row no-gutters v-for="(row,index) in getRows" :key="index">
-            <b-col cols=1 v-for="sa in getSeatsForRow(row)" :key="sa.seat.id">
-                <b-card :header="sa.seat.type.name" :bg-variant=resolveFooterBg(sa) text-variant='white' :header-bg-variant=resolveBgColor(sa.seat.type) header-text-variant="white" class="text-center">
-                    <b-card-text>Row: {{sa.seat.row}} <br/> Seat: {{sa.seat.column}}</b-card-text>
-                    <!-- <b-card-footer footer-tag="footer" :footer=resolveFooterText(sa) :footer-text-variant=resolveFooterBg(sa)>
-                    </b-card-footer> -->
-                </b-card>
-                <b-button block v-if="isFree(sa) && !isInCart(sa.seat.id)" variant="outline-success" @click="addToCart(sa.seat)">Add to cart {{isFree(sa.seat)}}</b-button>
+        <b-col cols=1 class='mb-2' v-for="sa in getSeatsForRow(row)" :key="sa.seat.id">
+            <b-card :header="sa.seat.type.name" bg-variant="dark" :text-variant=resolveFooterBg(sa) :header-bg-variant=resolveBgColor(sa.seat.type) header-text-variant="white" class="text-center">
+                Row: {{sa.seat.row}} <br /> Seat: {{sa.seat.column}}
+            </b-card>
+            <div v-if="status">
+                <b-button block v-if="isFree(sa) && !isInCart(sa.seat.id)" variant="outline-success" @click="addToCart(sa.seat)">Add to cart</b-button>
                 <b-button block v-if="isInCart(sa.seat.id)" variant="warning" @click="removeFromCart(sa.seat)">Remove</b-button>
-            </b-col>
+            </div>
+        </b-col>
     </b-row>
-    </b-container>
 </div>
 </template>
 
@@ -39,8 +37,26 @@ export default {
         display: Object
     },
     computed: {
+        status() {
+            if (!this.display.active || new Date(this.display.startsAt) < new Date())
+                return false
+            return true
+        },
         seatsAvailability() {
-            return this.display.seatsAvailability
+            let seats = this.display.hall.seats
+            let seatsAvailability = []
+            seats.forEach(seat => {
+                seatsAvailability.push({
+                    seat: seat,
+                    free: true
+                })
+            });
+            let tickets = this.display.tickets
+            tickets.forEach(ticket => {
+                let sa = seatsAvailability.find(sa => sa.seat.id == ticket.seat.id)
+                sa.free = false
+            })
+            return seatsAvailability
         },
         getRows() {
             var mapped = this.seatsAvailability.map(sa => sa.seat.row)
@@ -102,7 +118,7 @@ export default {
             return arr
         },
         getSeatTypeNum(type) {
-             var arr = this.seatsAvailability.filter(sa => sa.seat.type.id === type)
+            var arr = this.seatsAvailability.filter(sa => sa.seat.type.id === type)
             return arr.length
         },
         isFree(sa) {
@@ -124,10 +140,11 @@ export default {
             return false
         },
         removeFromCart(seat) {
-            this.$store.dispatch('removeFromCart', {
-                display: this.display,
+            let payload = {
+                displayId: this.display.id,
                 seatId: seat.id
-            })
+            }
+            this.$store.dispatch('removeFromCart', payload)
         }
     }
 }

@@ -1,74 +1,37 @@
 <template>
 <div>
-    <b-table hover small :items=items :fields=fields table-variant='dark' striped responsive>
-        <template v-slot:cell(show_details)="row">
-            <b-button size="sm" @click=showDetails(row) class="mr-2">
-                {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
-            </b-button>
+    <b-table dark hover small responsive :table-class="`text-center text-${theme.TEXT_PRIMARY}`" :items=displays :fields=fields >
+        <template v-slot:cell(date)="row">
+            {{new Date(row.item.startsAt).toLocaleString().split(',')[0]}}
         </template>
-
-        <template v-slot:row-details="row">
-            <b-card>
-                <Display :display=selected />
-                <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
-            </b-card>
+        <template v-slot:cell(time)="row">
+            {{new Date(row.item.startsAt).toLocaleString().split(',')[1]}}
         </template>
-
-        <template v-slot:cell(edit)="row">
-            <b-button :disabled=row.item.active v-b-modal.display-edit-modal size="sm" variant='success' @click="setSelectedDisplay(row.item)">
-                <b-icon icon="pencil"></b-icon>
-            </b-button>
+        <template v-slot:cell(movie)="row">
+            {{row.item.movie.title}}
         </template>
-
-        <template v-slot:cell(cancel)="row">
-            <b-button :disabled=row.item.active v-b-modal.display-cancel-modal size="sm" variant='danger' @click="setSelectedDisplay(row.item)">
-                <b-icon icon="archive"></b-icon>
-            </b-button>
-        </template>        
+        <template v-slot:cell(hall)="row">
+            {{row.item.hall.name}}
+        </template>
+        <template v-slot:cell(status)="row">
+            <span :class="`text-${resolveDisplayStatusColor(row.item)}`">{{resolveDisplayStatus(row.item)}}</span>
+        </template>
+        <template v-slot:cell(details)="row">
+            <b-button size='sm' block variant='outline-light' :to="`displays/${row.item.id}`">Details</b-button>
+        </template>
     </b-table>
-    <!-- MODALS -->
-    <b-modal id="display-edit-modal" size="lg" title="Edit display" hide-footer>
-        <div>
-            <DisplayNew :display=selected @displaySaved='updateDisplay($event)' />
-        </div>
-        <template v-slot:modal-footer="{ ok, cancel }">
-            <b-button size="sm" variant="success" @click="saveDisplay()">
-                OK
-            </b-button>
-            <b-button size="sm" variant="danger" @click="cancel()">
-                Cancel
-            </b-button>
-        </template>
-    </b-modal>
-    <b-modal static id="display-cancel-modal" title="Cancel display">
-        <p v-if="selected != null" class="my-4">Are you sure you want to cancel?</p>
-        <template v-slot:modal-footer="{ ok, cancel }">
-            <b-button size="sm" variant="danger" @click="cancelDisplay()">
-                Yes
-            </b-button>
-            <b-button size="sm" variant="primary" @click="cancel()">
-                Cancel
-            </b-button>
-        </template>
-    </b-modal>
 </div>
 </template>
 
 <script>
-import axios from 'axios'
 import {
-    cinemaApi
-} from '../_destinations/destinations.js'
-import Display from './Display.vue'
-import DisplayNew from './DisplayNew.vue'
+    Theme
+} from '../_static/Theme'
 export default {
-    components: {
-        Display,
-        DisplayNew
-    },
     data() {
         return {
-            fields: ['date', 'time', 'movie', 'hall', 'show_details', 'edit', 'cancel'],
+            theme: Theme,
+            fields: ['date', 'time', 'movie', 'hall', 'status', 'details'],
             selected: null
         }
     },
@@ -94,36 +57,31 @@ export default {
         }
     },
     methods: {
-        setSelectedDisplay(display) {
-            let displayId = display.id
-            const urlDisplay = cinemaApi.BASE_URL + cinemaApi.DISPLAYS + displayId
-            console.log(urlDisplay)
-            axios.get(urlDisplay).then(response => {
-                this.selected = response.data
-                console.log(this.selected)
-            }).catch(err => {
-                console.log(err)
-            })
+        resolveDisplayStatus(display) {
+            if (!display.active)
+                return 'Canceled'
+            if (new Date(display.startsAt) < new Date())
+                return 'Finished'
+            return 'Active'
         },
-        showDetails(row) {
-            this.setSelectedDisplay(row.item)
-            row.toggleDetails()
-        },
-        updateDisplay(display) {
-            this.$emit('updateDisplay', display)
-            this.$bvModal.hide('display-edit-modal')
-        },
-        cancelDisplay() {
-            const urlDisplay = cinemaApi.BASE_URL + cinemaApi.DISPLAYS + this.selected.id
-            var displayId = this.selected.id
-            axios.delete(urlDisplay).then(response => {
-                this.selected = response.data
-                this.$emit('cancelDisplay', displayId)
-                this.$bvModal.hide('display-cancel-modal')
-            }).catch(err => {
-                console.log(err)
-            })
+        resolveDisplayStatusColor(display) {
+            if (!display.active)
+                return 'danger'
+            if (new Date(display.startsAt) < new Date())
+                return 'primary'
+            return 'success'
         }
+        // cancelDisplay() {
+        //     const urlDisplay = cinemaApi.BASE_URL + cinemaApi.DISPLAYS + this.selected.id
+        //     var displayId = this.selected.id
+        //     axios.delete(urlDisplay).then(response => {
+        //         this.selected = response.data
+        //         this.$emit('cancelDisplay', displayId)
+        //         this.$bvModal.hide('display-cancel-modal')
+        //     }).catch(err => {
+        //         console.log(err)
+        //     })
+        // }
     }
 }
 </script>

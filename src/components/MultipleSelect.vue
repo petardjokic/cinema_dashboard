@@ -3,12 +3,12 @@
     <b-form-select v-model=currentSelected :options=options></b-form-select>
     <b-button :disabled="!currentSelected" @click=addItem>Add</b-button>
     <hr />
-    <b-table small :fields=outputTableFields :items=output responsive>
+    <b-table small fixed :fields=outputTableFields :items=output >
         <template v-slot:cell(selected)="row">
             {{ row.item.name }}
         </template>
         <template v-slot:cell(remove)="row">
-            <b-button size="sm" variant='danger' @click=removeItem(row.item)>
+            <b-button size="sm" block variant='danger' @click=removeItem(row.item)>
                 <b-icon icon="trash"></b-icon>
             </b-button>
         </template>

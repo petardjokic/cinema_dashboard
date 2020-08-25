@@ -1,18 +1,16 @@
 <template>
 <div>
-    <DisplayEntry :display=display />
-    <hr>
-    <b-button type="submit" variant="primary" @click="onSubmit">Submit</b-button>
-    <b-button type="reset" variant="danger" @click="onReset">Reset</b-button>
+    <b-form @submit=onSubmit>
+        <DisplayEntry :display=display />
+        <hr>
+        <b-button block type="submit" variant="outline-light">Save</b-button>
+    </b-form>
 </div>
 </template>
 
 <script>
-import axios from 'axios'
-import {
-    cinemaApi
-} from '../_destinations/destinations.js'
-import DisplayEntry from './DisplayEntry.vue'
+import CINEMA_API from '../_static/CinemaAPI'
+import DisplayEntry from './DisplayEntry'
 export default {
     components: {
         DisplayEntry
@@ -21,38 +19,52 @@ export default {
         display: Object
     },
     methods: {
-        onReset() {
-            this.display = {
-                id: null,
-                movie: null,
-                hall: null,
-                startsAt: '',
-                prices: [],
-                tickets: [],
-                seatsAvailability: []
-            }
+        showToast(data, variant) {
+            this.$bvToast.toast(data, {
+                title: 'Info',
+                variant: variant,
+                solid: true,
+                autoHideDelay: 5000,
+                appendToast: false
+            })
         },
-        onSubmit() {
-            var displayToSend = {
+        onSubmit(event) {
+            event.preventDefault()
+            var payload = {
                 id: this.display.id,
                 movie: {
                     id: this.display.movie.id
                 },
                 hall: {
-                    id:this.display.hall.id
+                    id: this.display.hall.id
                 },
                 category: {
-                    id:this.display.category.id
+                    id: this.display.category.id
                 },
-                startsAt: this.display.startsAt
+                startsAt: this.display.startsAt,
+                active: true
             }
-            axios.post(cinemaApi.BASE_URL + cinemaApi.DISPLAYS, displayToSend).then(response => {
-                response.data._rowVariant = 'success'
-                console.log(response.data)
-                this.$emit('displaySaved', response.data)
-                this.$router.push('/display-search')
-            }).catch(err => {
-                console.log(err.response.data)
+            CINEMA_API.DISPLAY.save(payload).then(() => {
+                this.showToast('Saved!', 'success')
+                setTimeout(() => {
+                    this.$router.replace('display-search')
+                }, 2000);
+            }).catch(error => {
+                let errorMessage = ''
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.data.message);
+                    errorMessage = error.response.data.message
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                    errorMessage = 'Server is unavailable'
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                    errorMessage = `ERROR: ${error.message}`
+                }
+                this.showToast(errorMessage, 'danger')
             })
         }
     }

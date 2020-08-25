@@ -1,10 +1,9 @@
 <template>
 <div>
-    <b-form>
         <b-row>
             <b-col>
-                <b-form-group id="fieldset-id" description="Movie ID" label="ID:" label-for="input-id">
-                    <b-form-input v-model=movie.id id="input-id" type="number" disabled></b-form-input>
+                <b-form-group id="fieldset-id" label="ID:" label-for="input-id">
+                    <b-form-input v-model=movie.id id="input-id" placeholder="Movie ID" type="number" disabled></b-form-input>
                 </b-form-group>
             </b-col>
             <b-col>
@@ -12,52 +11,51 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-form-group id="fieldset-title" description="Title" label="Title:" label-for="input-title">
-                    <b-form-input v-model=movie.title id="input-title" type="text"></b-form-input>
+                <b-form-group id="fieldset-title" label="Title:" label-for="input-title">
+                    <b-form-input v-model=movie.title required id="input-title" placeholder="Enter title" type="text"></b-form-input>
                 </b-form-group>
             </b-col>
             <b-col>
-                <b-form-group id="fieldset-trailerUrl" description="Trailer URL" label="Trailer:" label-for="input-trailerUrl">
-                    <b-form-input v-model=movie.trailerUri id="input-trailerUrl" type="text"></b-form-input>
-                </b-form-group>
-            </b-col>
-        </b-row>
-        <b-row>
-            <b-col>
-                <b-form-group id="fieldset-releaseYear" description="Year" label="Year:" label-for="input-releaseYear">
-                    <b-form-input v-model=movie.releaseYear id="input-releaseYear" type="number"></b-form-input>
-                </b-form-group>
-            </b-col>
-            <b-col>
-                <b-form-group id="fieldset-duration" description="Duration" label="Duration:" label-for="input-duration">
-                    <b-form-input v-model=movie.duration id="input-duration" type="number"></b-form-input>
+                <b-form-group id="fieldset-trailerUrl" label="Trailer:" label-for="input-trailerUrl">
+                    <b-form-input v-model=movie.trailerUri required id="input-trailerUrl" placeholder="Trailer URL" type="text"></b-form-input>
                 </b-form-group>
             </b-col>
         </b-row>
         <b-row>
             <b-col>
-                <b-form-group id="fieldset-genre" description="Select Genre" label="Genre:" label-for="input-genre">
+                <b-form-group id="fieldset-releaseYear" label="Year:" label-for="input-releaseYear">
+                    <b-form-input v-model=movie.releaseYear min=1 required id="input-releaseYear" placeholder="Enter year" type="number"></b-form-input>
+                </b-form-group>
+            </b-col>
+            <b-col>
+                <b-form-group id="fieldset-duration" label="Duration:" label-for="input-duration">
+                    <b-form-input v-model=movie.duration min=1 required id="input-duration" placeholder="Enter duration" type="number"></b-form-input>
+                </b-form-group>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col>
+                <b-form-group id="fieldset-genre" label="Genre:" label-for="input-genre">
                     <b-form-select disabled multiple v-model=dummyArray :options=selectedGenres></b-form-select>
                     <b-button v-b-modal.genre-select-modal block variant='light'>
-                        Select Genres
+                        Select
                     </b-button>
                 </b-form-group>
             </b-col>
             <b-col>
-                <b-form-group id="fieldset-prodComp" description="Select Production Company" label="ProductionCompany:" label-for="input-prodComp">
+                <b-form-group id="fieldset-prodComp" label="ProductionCompany:" label-for="input-prodComp">
                     <b-form-select disabled multiple v-model=dummyArray :options=selectedProdComp></b-form-select>
                     <b-button v-b-modal.productionCompany-select-modal block variant='light'>
-                        Select Production Companies
+                        Select
                     </b-button>
                 </b-form-group>
             </b-col>
         </b-row>
         <b-row>
             <b-col>
-                <b-form-textarea v-model=movie.description id="textarea-small" placeholder="Enter description"></b-form-textarea>
+                <b-form-textarea v-model=movie.description required id="textarea-small" placeholder="Enter description"></b-form-textarea>
             </b-col>
         </b-row>
-    </b-form>
     <b-modal lazy hide-footer id="genre-select-modal" size="sm" title="Select genres">
         <MultipleSelect :items=genres :selectedList=movie.genres @selected='setSelectedGenres($event)' />
     </b-modal>
@@ -69,9 +67,7 @@
 
 <script>
 import axios from 'axios'
-import {
-    cinemaApi
-} from '../_destinations/destinations.js'
+import CINEMA_API from '../_static/CinemaAPI'
 import MultipleSelect from "./MultipleSelect.vue"
 
 export default {
@@ -122,9 +118,9 @@ export default {
         }
     },
     created() {
-        const urlGenres = axios.get(cinemaApi.BASE_URL + cinemaApi.GENRES)
-        const urlProductionCompany = axios.get(cinemaApi.BASE_URL + cinemaApi.PRODUCTION_COMPANIES)
-        axios.all([urlGenres, urlProductionCompany]).then(axios.spread((...responses) => {
+        const genreRequest = CINEMA_API.GENRE.getAll()
+        const productionCompanyRequest = CINEMA_API.PRODUCTION_COMPANY.getAll()
+        axios.all([genreRequest, productionCompanyRequest]).then(axios.spread((...responses) => {
             this.genres = responses[0].data
             this.productionCompanies = responses[1].data
         })).catch(err => {

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <b-table :stacked=vertical borderless responsive :items="convertForTable"></b-table>
+    <b-table dark fixed :stacked=vertical borderless :responsive=!vertical :items="convertForTable"></b-table>
 </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
         convertForTable() {
             var value = null
             if (this.type === 'display') {
-                this.convertTicket()
+                // this.convertTicket()
                 value = this.convertDisplay()
             } else if (this.type === 'movie') {
                 value = this.convertMovie()
@@ -43,22 +43,22 @@ export default {
         convertMovie() {
             var movie = {
                 title: this.item.title,
-                genres: this.listString(this.item.genres),
-                productionCompanies: this.listString(this.item.productionCompanies),
                 releaseYear: this.item.releaseYear,
                 duration: this.item.duration,
+                genres: this.listString(this.item.genres),
+                productionCompanies: this.listString(this.item.productionCompanies),
                 description: this.item.description
             }
             return [movie]
         },
         convertTicket() {
             var arr = []
-            var br = 0
+            // var br = 0
             this.item.prices.forEach(displayPrice => {
                 arr.push({
                     seat: displayPrice.seatType.name,
                     price: displayPrice.price,
-                    _rowVariant: this.variants[br++ % 4]
+                    // _rowVariant: this.variants[br++ % 4]
                 })
             });
             return arr

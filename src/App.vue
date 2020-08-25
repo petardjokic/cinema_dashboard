@@ -1,35 +1,15 @@
 <template>
 <div id="app">
-    <Menu />
-    <div class="content">
-        <router-view></router-view>
-    </div>
+    <router-view></router-view>
 </div>
 </template>
 
 <script>
-import Menu from './components/Menu.vue'
 export default {
-    name: 'app',
-    components: {
-        Menu
-    }
+    name: 'app'
 }
 </script>
 
-<style scoped>
-#app {
-    height: 100%;
-    width: 100%;
-}
-html,
-body {
-    height: 100%;
-    width: 100%;
-    
-}
-.content {
-    margin-top: 50px;
-    /* background-color: lightblue; */
-}
+<style scoped> 
+
 </style>

@@ -1,11 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     strict: true,
+    plugins: [createPersistedState({
+        storage: window.localStorage,
+    })],
     getters: {
+        isAuthenticated(state) {
+            return state.user != null
+        },
+        getUserName(state) {
+            return state.user.name
+        },
         getCart(state) {
             return state.cart
         },
@@ -15,18 +25,29 @@ export const store = new Vuex.Store({
             return num
         },
         getTransformedForInvoice(state) {
-            var cart = {
-                cartItemsUnchecked: []
-            }
+            var invoiceItems = []
+
             state.cart.forEach(event => {
                 event.seats.forEach(seat => {
-                    cart.cartItemsUnchecked.push({ displayId: event.display.id, seatId: seat.id })
+                    invoiceItems.push({
+                        displayId: event.display.id,
+                        price: seat.price,
+                        seat: {
+                            id: seat.id
+                        }
+                    })
                 })
             })
-            return cart
+            return invoiceItems
         }
     },
     mutations: {
+        login(state, user) {
+            state.user = user
+        },
+        async logout(state) {
+            state.user = null
+        },
         removeFromCart(state, DispSeat) {
             const event = state.cart.find(event => event.display.id === DispSeat.displayId)
             event.seats = event.seats.filter(seat => seat.id !== DispSeat.seatId)
@@ -38,6 +59,8 @@ export const store = new Vuex.Store({
                 event = { display: dispSeatObj.display, seats: [] }
                 state.cart.push(event)
             }
+            let seatPrice = event.display.category.prices.find(price => price.seatType.id === dispSeatObj.seat.type.id)
+            dispSeatObj.seat.price = seatPrice.price
             event.seats.push(dispSeatObj.seat)
         },
         emptyCart(state) {
@@ -45,6 +68,12 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
+        login(context, user) {
+            context.commit('login', user)
+        },
+        logout(context) {
+            context.commit('logout')
+        },
         removeFromCart(context, DispSeat) {
             context.commit('removeFromCart', DispSeat)
         },
@@ -56,6 +85,7 @@ export const store = new Vuex.Store({
         }
     },
     state: {
+        user: null,
         cart: [],
     }
 })

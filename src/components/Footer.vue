@@ -7,11 +7,11 @@
   </b-row>
 </b-container> -->
 <div>
-    <b-navbar type="dark" variant="info" fixed="bottom" :sticky=true >
+    <b-navbar type="dark" variant="dark" fixed="bottom" >
 
         <b-navbar-nav :fill=true>
             <b-nav-item href="#" disabled></b-nav-item>
-            <b-nav-item href="#" disabled>FON 2019</b-nav-item>
+            <b-nav-item href="#" disabled>FON 2020</b-nav-item>
             <b-nav-item href="#" disabled></b-nav-item>
         </b-navbar-nav>
     </b-navbar>
