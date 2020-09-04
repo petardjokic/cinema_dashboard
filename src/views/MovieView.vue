@@ -1,6 +1,9 @@
 <template>
 <div>
-    <Movie :movie=movie @delete=deleteMovie />
+    <div v-if=errorSignal>
+        <b-alert :show=errorSignal variant="danger">{{errorMsg}}</b-alert>
+    </div>
+    <Movie v-else :movie=movie @delete=deleteMovie />
 </div>
 </template>
 
@@ -21,7 +24,9 @@ export default {
                 genres: [],
                 productionCompanies: [],
                 description: null
-            }
+            },
+            errorSignal: false,
+            errorMsg: ''
         }
     },
     methods: {
@@ -66,13 +71,17 @@ export default {
         let movieRequest = CINEMA_API.MOVIE.getById(this.$route.params.id)
         let genresRequest = CINEMA_API.MOVIE.getGenresById(this.$route.params.id)
         let productionCompaniesRequest = CINEMA_API.MOVIE.getProductionCompaniesById(this.$route.params.id)
-
-        axios.all([movieRequest, genresRequest, productionCompaniesRequest]).then(axios.spread((...responses) => {
-            this.movie = responses[0].data
-            this.movie.genres = responses[1].data
-            this.movie.productionCompanies = responses[2].data
+        movieRequest.then(response => {
+            this.movie = response.data
+            axios.all([genresRequest, productionCompaniesRequest]).then(axios.spread((...responses) => {
+            this.movie.genres = responses[0].data
+            this.movie.productionCompanies = responses[1].data
             console.log(this.movie)
-        })).catch(error => {
+        }))
+        })
+        .catch(error => {
+            this.errorSignal = true
+            this.errorMsg = error.response.data.message
             console.log(error)
         })
     }

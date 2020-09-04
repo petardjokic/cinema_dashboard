@@ -1,9 +1,9 @@
 <template>
 <b-jumbotron fluid container-fluid :bg-variant=theme.BG_PRIMARY :text-variant=theme.TEXT_PRIMARY :border-variant=theme.BG_PRIMARY>
-    <template v-slot:header>Display Search</template>
+    <template v-slot:header>Projection Search</template>
 
     <template v-slot:lead>
-        Search for displays
+        Search for projections
         <div>
             <b-form @submit="searchDisplays">
                 <div class="my-3 d-flex justify-content-between">

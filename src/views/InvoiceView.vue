@@ -1,6 +1,9 @@
 <template>
 <div>
-    <Invoice :itemData=invoice :displays=displays @cancel=cancelInvoice />
+    <div v-if=errorSignal>
+        <b-alert :show=errorSignal variant="danger">{{errorMsg}}</b-alert>
+    </div>
+    <Invoice v-else :itemData=invoice :displays=displays @cancel=cancelInvoice />
 </div>
 </template>
 
@@ -18,7 +21,9 @@ export default {
                 issuedAt: new Date().toISOString(),
                 items: [],
             },
-            displays: []
+            displays: [],
+            errorSignal: false,
+            errorMsg: ''
         }
     },
     methods: {
@@ -52,15 +57,19 @@ export default {
                     displayRequests.push(CINEMA_API.DISPLAY.getById(id))
                 })
                 axios.all(displayRequests).then(responses => {
-                        responses.forEach(response => {
-                            this.displays.push(response.data)
-                        })
-                        console.log(this.displays)
+                    responses.forEach(response => {
+                        this.displays.push(response.data)
                     })
+                    console.log(this.displays)
                 })
+            })
+            .catch(error => {
+                this.errorSignal = true
+                this.errorMsg = error.response.data.message
+            })
 
-        }
     }
+}
 </script>
 
 <style>

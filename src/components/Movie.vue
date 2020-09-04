@@ -1,6 +1,6 @@
 <template>
 <b-jumbotron fluid container-fluid :bg-variant=theme.BG_PRIMARY :text-variant=theme.TEXT_PRIMARY :border-variant=theme.BG_PRIMARY>
-    <template v-slot:header>{{movie.title}}({{movie.releaseYear}})</template>
+    <template v-slot:header>{{movie.title}}({{movie.releaseYear}})<b-button @click=deleteMovie class='py-3 mt-3 mb-5 float-right' variant="outline-danger">Delete</b-button></template>
     <template v-slot:lead>{{movie.description}}</template>
     <hr class="my-4">
     <div>
@@ -25,7 +25,6 @@
             <b-embed type="iframe" :src="`https://www.youtube.com/embed/${movie.trailerUri}`" allowfullscreen></b-embed>
         </div>
     </div>
-    <b-button @click=deleteMovie class='mt-3 mb-5 float-right' variant="outline-danger">Delete movie</b-button>
 </b-jumbotron>
 </template>
 

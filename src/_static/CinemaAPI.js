@@ -99,6 +99,22 @@ export default {
             return axios.delete(url)
         },
     },
+    HALL: {
+        hallUrl: CinemaAPIPaths.BASE_URL + CinemaAPIPaths.HALLS,
+        getAll: function() {
+            const url = this.hallUrl
+            console.log(url)
+            return axios.get(url)
+        },
+    },
+    CATEGORY: {
+        categoryUrl: CinemaAPIPaths.BASE_URL + CinemaAPIPaths.CATEGORIES,
+        getAll: function() {
+            const url = this.categoryUrl
+            console.log(url)
+            return axios.get(url)
+        },
+    },
     INVOICE: {
         invoiceUrl: CinemaAPIPaths.BASE_URL + CinemaAPIPaths.INVOICES,
         getById: function(payload) {

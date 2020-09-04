@@ -3,7 +3,7 @@
     <b-row>
         <b-col cols=6>
             <b-form-group id="fieldset-id" label="ID:" label-for="input-id">
-                <b-form-input v-model=display.id id="input-id" type="number" placeholder="Display ID" disabled></b-form-input>
+                <b-form-input v-model=display.id id="input-id" type="number" placeholder="Projection ID" disabled></b-form-input>
             </b-form-group>
         </b-col>
         <b-col cols=6>
@@ -42,9 +42,7 @@
 
 <script>
 import axios from 'axios'
-import {
-    cinemaApi
-} from '../_destinations/destinations.js'
+import CINEMA_API from '../_static/CinemaAPI'
 export default {
     data() {
         return {
@@ -99,9 +97,9 @@ export default {
         }
     },
     mounted() {
-        const urlMovies = axios.get(cinemaApi.BASE_URL + cinemaApi.MOVIES)
-        const urlHalls = axios.get(cinemaApi.BASE_URL + cinemaApi.HALLS)
-        const urlCategories = axios.get(cinemaApi.BASE_URL + cinemaApi.CATEGORIES)
+        const urlMovies = CINEMA_API.MOVIE.getAll()
+        const urlHalls = CINEMA_API.HALL.getAll()
+        const urlCategories = CINEMA_API.CATEGORY.getAll()
         axios.all([urlMovies, urlHalls, urlCategories]).then(axios.spread((...responses) => {
             this.movies = responses[0].data
             this.halls = responses[1].data

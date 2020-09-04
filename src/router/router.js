@@ -12,6 +12,7 @@ import DisplayView from '../views/DisplayView.vue'
 import InvoiceView from '../views/InvoiceView.vue'
 import LoggedView from '../views/LoggedView.vue'
 import LoginView from '../views/LoginView.vue'
+import DummyView from '../views/DummyView.vue'
 
 
 Vue.use(VueRouter)
@@ -19,6 +20,10 @@ Vue.use(VueRouter)
 export const router = new VueRouter({
     mode: 'history',
     routes: [{
+        path: '/dummy',
+        name: 'dummy',
+        component: DummyView
+    }, {
         path: '/login',
         name: 'login',
         component: LoginView

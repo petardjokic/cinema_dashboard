@@ -1,5 +1,8 @@
 <template>
 <div>
+    <div>
+        <b-alert :show=errorSignal variant="danger">{{errorMsg}}</b-alert>
+    </div>
     <Display :display=display @cancel=cancelDisplay />
 </div>
 </template>
@@ -21,7 +24,9 @@ export default {
                 hall: null,
                 prices: null,
                 tickets: null
-            }
+            },
+            errorSignal: false,
+            errorMsg: ''
         }
     },
     methods: {
@@ -72,6 +77,8 @@ export default {
         })
             console.log(this.display)
         }).catch(error => {
+            this.errorSignal = true
+            this.errorMsg = error.response.data.message
             console.log(error)
         })
     }

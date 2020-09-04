@@ -10,7 +10,7 @@
                     <b-dropdown-item to="/movie-new">New</b-dropdown-item>
                     <b-dropdown-item to="/movie-search">Search</b-dropdown-item>
                 </b-nav-item-dropdown>
-                <b-nav-item-dropdown text="Display">
+                <b-nav-item-dropdown text="Projection">
                     <b-dropdown-item to="/display-new">New</b-dropdown-item>
                     <b-dropdown-item to="/display-search">Search</b-dropdown-item>
                 </b-nav-item-dropdown>

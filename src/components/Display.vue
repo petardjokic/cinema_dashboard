@@ -11,7 +11,7 @@
         </template>
         <hr class="my-4">
         <b-tabs content-class="mt-3" :class="`bg-${theme.BG_PRIMARY} text-${theme.TEXT_PRIMARY}`" :active-nav-item-class="`bg-${theme.BG_SECONDARY}`">
-            <b-tab lazy title="Display" :title-link-class="`text-${theme.TEXT_PRIMARY}`">
+            <b-tab lazy title="Projection" :title-link-class="`text-${theme.TEXT_PRIMARY}`">
                 <div class="d-flex justify-content-start">
                     <div class='pr-5'>Status:</div>
                     <b-button disabled size='sm' class='mx-5 px-5' :variant="display.active ? 'outline-success': 'outline-danger'">
